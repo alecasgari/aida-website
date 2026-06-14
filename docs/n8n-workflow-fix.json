@@ -1,0 +1,57 @@
+{
+  "name": "Aida Register Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "85da6969-8b96-4483-9808-223a4ce7b19c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "id": "869acaec-7598-40cc-8a16-5b1f420bb443",
+      "name": "Webhook",
+      "webhookId": "85da6969-8b96-4483-9808-223a4ce7b19c"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"tracking_code\": \"AIDA-{{ $now.format('HHmmss') }}\",\n  \"message\": \"با تشکر از مشارکت شما در پویش آیدا.\"\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [220, 0],
+      "id": "a270b76e-dd77-49c6-a4a9-43a767baa8e9",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -97,10 +97,30 @@
       body: formData
     })
       .then(function (res) {
-        return res.json().then(function (data) {
-          if (!res.ok || !data.success) {
+        return res.text().then(function (text) {
+          var data = {};
+          try {
+            data = text ? JSON.parse(text) : {};
+          } catch (e) {
+            throw new Error('پاسخ سرور نامعتبر بود. لطفاً دوباره تلاش کنید.');
+          }
+
+          if (!res.ok) {
+            var serverMsg = data.message || data.error || text;
+            if (serverMsg && serverMsg.indexOf('Unused Respond to Webhook') !== -1) {
+              throw new Error('تنظیمات webhook در n8n ناقص است: Response Mode باید «Using Respond to Webhook Node» باشد.');
+            }
+            throw new Error(serverMsg || 'خطا در ارسال اطلاعات (کد ' + res.status + ').');
+          }
+
+          if (data.message === 'Workflow was started' && !data.success) {
+            throw new Error('webhook هنوز پاسخ JSON برنمی‌گرداند. در n8n حالت Respond را روی «Respond to Webhook Node» بگذارید.');
+          }
+
+          if (!data.success) {
             throw new Error(data.message || 'خطا در ارسال اطلاعات.');
           }
+
           return data;
         });
       })
@@ -109,7 +129,11 @@
         window.location.href = 'thank-you.html?ref=' + ref;
       })
       .catch(function (err) {
-        showAlert(alertEl, err.message || 'خطا در ارسال. لطفاً دوباره تلاش کنید.');
+        var msg = err.message || 'خطا در ارسال. لطفاً دوباره تلاش کنید.';
+        if (err.name === 'TypeError' && msg.indexOf('fetch') !== -1) {
+          msg = 'خطای CORS یا شبکه: webhook باید Access-Control-Allow-Origin را برای دامنه سایت برگرداند.';
+        }
+        showAlert(alertEl, msg);
         alertEl.classList.remove('form-alert--success');
         alertEl.classList.add('form-alert--error', 'is-visible');
         submitBtn.disabled = false;
