@@ -34,7 +34,7 @@
 
     var targets = document.querySelectorAll(
       '.section .container > *:not(.card-grid):not(.split):not(.bar-chart):not(.timeline):not(.hpv-types), ' +
-      '.card, .impact-box, .split > *, .cta-band .container > *, .form-page, .thankyou'
+      '.card, .impact-box, .split > *, .cta-band .container > *, .form-page:not(.aida-stats), .thankyou, .aida-stats'
     );
 
     targets.forEach(function (el) {
