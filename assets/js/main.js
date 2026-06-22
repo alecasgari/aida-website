@@ -78,8 +78,24 @@
     }, { passive: true });
   }
 
+  function initSeroChartScale() {
+    document.querySelectorAll('.sero-chart[data-scale-min][data-scale-max]').forEach(function (chart) {
+      var min = parseFloat(chart.dataset.scaleMin);
+      var max = parseFloat(chart.dataset.scaleMax);
+      var range = max - min;
+      if (!range) return;
+
+      chart.querySelectorAll('.sero-chart__bar[data-value]').forEach(function (bar) {
+        var value = parseFloat(bar.dataset.value);
+        var pct = Math.max(4, Math.min(100, ((value - min) / range) * 100));
+        bar.style.setProperty('--h', pct + '%');
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     setActiveNav();
+    initSeroChartScale();
     initScrollReveal();
     initHeaderScroll();
 

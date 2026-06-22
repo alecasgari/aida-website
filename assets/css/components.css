@@ -1303,6 +1303,15 @@
   direction: ltr;
   unicode-bidi: embed;
   flex-shrink: 0;
+  min-height: 240px;
+}
+
+.sero-chart__yaxis-break {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: #5a7a88;
+  opacity: 0.85;
+  margin: -0.15rem 0;
 }
 
 .sero-chart__grid {
@@ -1394,6 +1403,14 @@
   margin-top: 1.25rem;
   direction: ltr;
   unicode-bidi: embed;
+}
+
+.sero-chart__note {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 0.45rem;
+  line-height: 1.6;
 }
 
 @media (max-width: 560px) {

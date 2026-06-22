@@ -141,7 +141,7 @@
         <div class="container">
           <h2 class="section__title">ایمن‌زایی (Sero-conversion)</h2>
           <p class="section__subtitle" style="margin-bottom:1.5rem">نتایج مطالعه فاز ۳، به زبان ساده</p>
-          <div class="sero-chart reveal" aria-label="نمودار مقایسه نرخ Seroconversion گاردیسان و گارداسیل">
+          <div class="sero-chart reveal" aria-label="نمودار مقایسه نرخ Seroconversion گاردیسان و گارداسیل" data-scale-min="0.75" data-scale-max="1.0">
             <div class="sero-chart__legend">
               <span class="sero-chart__legend-item"><span class="sero-chart__swatch sero-chart__swatch--gardisun"></span>گاردیسان™</span>
               <span class="sero-chart__legend-item"><span class="sero-chart__swatch sero-chart__swatch--gardasil"></span>گارداسیل®</span>
@@ -150,24 +150,25 @@
               <div class="sero-chart__ylabel">4-fold Rise Percent to Base Titer</div>
               <div class="sero-chart__plot">
                 <div class="sero-chart__yaxis">
-                  <span>1.0</span>
-                  <span>0.8</span>
-                  <span>0.6</span>
-                  <span>0.4</span>
-                  <span>0.2</span>
-                  <span>0.0</span>
+                  <span>100%</span>
+                  <span>95%</span>
+                  <span>90%</span>
+                  <span>85%</span>
+                  <span>80%</span>
+                  <span class="sero-chart__yaxis-break" aria-hidden="true">⌇</span>
+                  <span>75%</span>
                 </div>
                 <div class="sero-chart__grid">
                   <div class="sero-chart__groups">
                     <div class="sero-chart__group">
                       <div class="sero-chart__bars">
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.93)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardisun" style="--h:93%"></div>
+                          <span class="sero-chart__val">93%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardisun" data-value="0.93"></div>
                         </div>
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.98)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardasil" style="--h:98%"></div>
+                          <span class="sero-chart__val">98%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardasil" data-value="0.98"></div>
                         </div>
                       </div>
                       <span class="sero-chart__xlabel">HPV 6</span>
@@ -175,12 +176,12 @@
                     <div class="sero-chart__group">
                       <div class="sero-chart__bars">
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.97)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardisun" style="--h:97%"></div>
+                          <span class="sero-chart__val">97%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardisun" data-value="0.97"></div>
                         </div>
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.99)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardasil" style="--h:99%"></div>
+                          <span class="sero-chart__val">99%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardasil" data-value="0.99"></div>
                         </div>
                       </div>
                       <span class="sero-chart__xlabel">HPV 11</span>
@@ -188,12 +189,12 @@
                     <div class="sero-chart__group">
                       <div class="sero-chart__bars">
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.97)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardisun" style="--h:97%"></div>
+                          <span class="sero-chart__val">97%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardisun" data-value="0.97"></div>
                         </div>
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.99)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardasil" style="--h:99%"></div>
+                          <span class="sero-chart__val">99%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardasil" data-value="0.99"></div>
                         </div>
                       </div>
                       <span class="sero-chart__xlabel">HPV 16</span>
@@ -201,12 +202,12 @@
                     <div class="sero-chart__group">
                       <div class="sero-chart__bars">
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.97)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardisun" style="--h:97%"></div>
+                          <span class="sero-chart__val">97%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardisun" data-value="0.97"></div>
                         </div>
                         <div class="sero-chart__bar-wrap">
-                          <span class="sero-chart__val">(0.99)</span>
-                          <div class="sero-chart__bar sero-chart__bar--gardasil" style="--h:99%"></div>
+                          <span class="sero-chart__val">99%</span>
+                          <div class="sero-chart__bar sero-chart__bar--gardasil" data-value="0.99"></div>
                         </div>
                       </div>
                       <span class="sero-chart__xlabel">HPV 18</span>
@@ -216,6 +217,7 @@
               </div>
             </div>
             <p class="sero-chart__caption">Seroconversion Rate (CI 95%)</p>
+            <p class="sero-chart__note">محور عمودی از ۷۵٪ تا ۱۰۰٪ نمایش داده شده تا تفاوت نرخ‌ها بهتر دیده شود.</p>
           </div>
         </div>
       </section>
