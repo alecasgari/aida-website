@@ -97,8 +97,28 @@
             </div>
 
             <div class="form-group" data-field="purchase_date">
-              <label for="purchase_date">تاریخ خرید / دریافت واکسن <span class="required">*</span></label>
-              <input type="date" id="purchase_date" name="purchase_date" required>
+              <label for="purchase_date_display">تاریخ خرید / دریافت واکسن <span class="required">*</span></label>
+              <div class="shamsi-date" data-shamsi-date>
+                <div class="shamsi-date__field">
+                  <input type="text" id="purchase_date_display" class="shamsi-date__display" readonly placeholder="مثال: ۱۴۰۴/۰۳/۱۵" autocomplete="off" aria-describedby="purchase_date_hint">
+                  <input type="hidden" id="purchase_date" name="purchase_date" class="shamsi-date__value" required>
+                  <button type="button" class="shamsi-date__trigger" aria-label="باز کردن تقویم شمسی">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="16" rx="2"/>
+                      <path d="M8 3v4M16 3v4M3 10h18"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="shamsi-date__popup" hidden>
+                  <div class="shamsi-date__head">
+                    <button type="button" class="shamsi-date__nav" data-shamsi-prev aria-label="ماه قبل">‹</button>
+                    <span class="shamsi-date__title"></span>
+                    <button type="button" class="shamsi-date__nav" data-shamsi-next aria-label="ماه بعد">›</button>
+                  </div>
+                  <div class="shamsi-date__grid"></div>
+                </div>
+              </div>
+              <span class="hint" id="purchase_date_hint">تاریخ به‌صورت شمسی انتخاب می‌شود</span>
               <span class="error-msg"></span>
             </div>
 
@@ -210,6 +230,8 @@
   <script src="assets/js/utm.js"></script>
   <script src="assets/js/stats.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/jalali.js"></script>
+  <script src="assets/js/shamsi-date.js"></script>
   <script src="assets/js/form.js"></script>
 </body>
 </html>

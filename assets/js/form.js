@@ -32,10 +32,12 @@
     groups.forEach(function (group) {
       group.classList.remove('is-invalid');
       var field = group.dataset.field;
-      var input = group.querySelector('input, select, textarea');
+      var input = field === 'purchase_date'
+        ? group.querySelector('.shamsi-date__value') || group.querySelector('input[type="hidden"]')
+        : group.querySelector('input, select, textarea');
       if (!input) return;
 
-      var value = input.type === 'checkbox' ? input.checked : input.value.trim();
+      var value = input.type === 'checkbox' ? input.checked : (input.value || '').trim();
       var errEl = group.querySelector('.error-msg');
       var errMsg = '';
 
@@ -53,6 +55,15 @@
       } else if (field === 'serial_number' && value) {
         var uid = value.replace(/\s/g, '');
         if (!/^\d{20}$/.test(uid)) errMsg = 'شماره UID باید دقیقاً ۲۰ رقم باشد.';
+      } else if (field === 'purchase_date' && value) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+          errMsg = 'تاریخ انتخاب‌شده معتبر نیست.';
+        } else {
+          var picked = new Date(value + 'T12:00:00');
+          var now = new Date();
+          now.setHours(23, 59, 59, 999);
+          if (picked > now) errMsg = 'تاریخ نمی‌تواند در آینده باشد.';
+        }
       } else if (field === 'product_photo' && input.files.length) {
         var file = input.files[0];
         if (file.size > MAX_FILE_SIZE) errMsg = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
@@ -93,6 +104,10 @@
     formData.set('phone', formData.get('phone').replace(/\s/g, ''));
     if (formData.get('serial_number')) {
       formData.set('serial_number', formData.get('serial_number').replace(/\s/g, ''));
+    }
+    var purchaseDisplay = $('#purchase_date_display');
+    if (purchaseDisplay && purchaseDisplay.value) {
+      formData.set('purchase_date_jalali', purchaseDisplay.value);
     }
 
     if (window.AidaUtm) {
