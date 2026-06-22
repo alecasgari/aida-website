@@ -183,6 +183,20 @@
 .bar-chart-wrap.is-visible .bar-chart__item:nth-child(4) .bar-chart__bar,
 .bar-chart.is-visible .bar-chart__item:nth-child(4) .bar-chart__bar { animation-delay: 0.26s; }
 
+.sero-chart__bar {
+  transform-origin: bottom;
+  transform: scaleY(0);
+}
+
+.sero-chart.is-visible .sero-chart__bar {
+  animation: barGrow 0.55s var(--ease-out) forwards;
+}
+
+.sero-chart.is-visible .sero-chart__group:nth-child(1) .sero-chart__bar { animation-delay: 0.05s; }
+.sero-chart.is-visible .sero-chart__group:nth-child(2) .sero-chart__bar { animation-delay: 0.12s; }
+.sero-chart.is-visible .sero-chart__group:nth-child(3) .sero-chart__bar { animation-delay: 0.19s; }
+.sero-chart.is-visible .sero-chart__group:nth-child(4) .sero-chart__bar { animation-delay: 0.26s; }
+
 .timeline__circle {
   transition: transform var(--duration-fast) var(--ease-out);
 }

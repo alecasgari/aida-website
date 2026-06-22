@@ -47,7 +47,7 @@
       card.classList.add('reveal');
     });
 
-    var charts = document.querySelectorAll('.bar-chart-wrap, .bar-chart, .timeline');
+    var charts = document.querySelectorAll('.bar-chart-wrap, .bar-chart, .sero-chart, .timeline');
     charts.forEach(function (el) {
       el.classList.add('reveal');
     });
@@ -64,7 +64,7 @@
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
 
-    document.querySelectorAll('.reveal, .impact-box, .bar-chart-wrap, .bar-chart, .timeline').forEach(function (el) {
+    document.querySelectorAll('.reveal, .impact-box, .bar-chart-wrap, .bar-chart, .sero-chart, .timeline').forEach(function (el) {
       observer.observe(el);
     });
   }

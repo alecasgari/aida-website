@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ثبت مشارکت — پویش آیدا</title>
-  <meta name="description" content="ثبت مشارکت در پویش آیدا — پس از خرید واکسن گاردیسان، اطلاعات خود را ثبت کنید.">
+  <meta name="description" content="ثبت مشارکت در پویش آیدا؛ پس از خرید واکسن گاردیسان، اطلاعات خود را ثبت کنید.">
   <link rel="icon" type="image/png" href="assets/images/meta/favicon.png">
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/base.css">
@@ -28,7 +28,7 @@
         </button>
         <nav class="header__nav">
           <a href="index.html" class="header__link">خانه</a>
-          <a href="hpv.html" class="header__link">آگاهی HPV</a>
+          <a href="hpv.html" class="header__link">آگاهی از HPV</a>
           <a href="gardisun.html" class="header__link">گاردیسان</a>
           <a href="register.html" class="header__link header__link--cta header__link--active">ثبت مشارکت</a>
         </nav>
@@ -44,14 +44,14 @@
           <div class="form-page aida-stats reveal" data-variant="compact"></div>
 
           <div class="notice notice--warning form-page" style="margin-bottom:2rem">
-            <p><strong>توجه:</strong> لطفاً پس از خرید واکسن گاردیسان از داروخانه، عکس محصول (جعبه) و شماره سریال آن را در فرم زیر وارد کنید.</p>
+            <p><strong>توجه:</strong> لطفاً پس از خرید واکسن گاردیسان از داروخانه، عکس بسته‌بندی محصول (قسمتی که شماره UID دارد، همانند عکس نمونه) و شماره UID آن را در فرم زیر وارد کنید.</p>
           </div>
 
           <div class="photo-guide form-page">
-            <img src="assets/images/product/photo-guide.webp" alt="نمونه عکس محصول">
+            <img src="assets/images/product/uid-guide.png" alt="راهنمای یافتن شماره UID روی جعبه گاردیسان">
             <div>
               <strong>راهنمای عکس</strong>
-              <p class="hint" style="margin-top:0.35rem">عکس باید جعبه واکسن گاردیسان را به‌وضوح نشان دهد. شماره سریال روی جعبه readable باشد.</p>
+              <p class="hint" style="margin-top:0.35rem">عکس باید جعبه واکسن گاردیسان را به‌وضوح نشان دهد. شماره UID روی جعبه (کنار بارکد دوبعدی) خوانا باشد.</p>
             </div>
           </div>
 
@@ -74,7 +74,7 @@
             <div class="form-group" data-field="phone">
               <label for="phone">شماره تماس (موبایل) <span class="required">*</span></label>
               <input type="tel" id="phone" name="phone" required placeholder="09121234567" inputmode="numeric" autocomplete="tel">
-              <span class="hint">۱۱ رقم — با ۰۹ شروع شود</span>
+              <span class="hint">۱۱ رقم، با ۰۹ شروع شود</span>
               <span class="error-msg"></span>
             </div>
 
@@ -103,16 +103,35 @@
             </div>
 
             <div class="form-group" data-field="serial_number">
-              <label for="serial_number">شماره سریال محصول <span class="required">*</span></label>
-              <input type="text" id="serial_number" name="serial_number" required placeholder="شماره سریال روی جعبه واکسن">
-              <span class="hint">شماره سریال درج‌شده روی بسته‌بندی گاردیسان</span>
+              <label for="serial_number" class="form-label-row">
+                <span>شماره UID محصول <span class="required">*</span></span>
+                <button type="button" class="uid-help-link" id="uid-help-btn" aria-haspopup="dialog">از کجا پیدا کنم؟</button>
+              </label>
+              <input type="text" id="serial_number" name="serial_number" required placeholder="شماره ۲۰ رقمی UID روی جعبه واکسن" inputmode="numeric" pattern="[0-9]{20}" maxlength="20">
+              <span class="hint">دو خط اعداد کنار بارکد را پشت سر هم وارد کنید (مثال: 15072010018958803818)</span>
               <span class="error-msg"></span>
             </div>
 
             <div class="form-group" data-field="product_photo">
-              <label for="product_photo">عکس محصول (جعبه واکسن) <span class="required">*</span></label>
-              <input type="file" id="product_photo" name="product_photo" required accept="image/jpeg,image/png,image/webp">
-              <span class="hint">فرمت: JPG، PNG یا WebP — حداکثر ۵ مگابایت</span>
+              <label>عکس محصول (جعبه واکسن) <span class="required">*</span></label>
+              <div class="file-drop" id="file-drop">
+                <input type="file" id="product_photo" name="product_photo" required accept="image/jpeg,image/png,image/webp" class="file-drop__input">
+                <div class="file-drop__empty" id="file-drop-empty">
+                  <svg class="file-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/>
+                  </svg>
+                  <p class="file-drop__title">عکس را اینجا بکشید یا انتخاب کنید</p>
+                  <p class="file-drop__hint">JPG، PNG یا WebP — حداکثر ۵ مگابایت</p>
+                  <button type="button" class="btn btn--outline btn--sm file-drop__btn">انتخاب فایل</button>
+                </div>
+                <div class="file-drop__preview" id="file-drop-preview" hidden>
+                  <img id="file-preview-img" alt="پیش‌نمایش عکس محصول">
+                  <div class="file-drop__meta">
+                    <span id="file-preview-name"></span>
+                    <button type="button" class="file-drop__remove" id="file-remove-btn">حذف</button>
+                  </div>
+                </div>
+              </div>
               <span class="error-msg"></span>
             </div>
 
@@ -135,12 +154,34 @@
       </section>
     </main>
 
+    <div class="modal" id="uid-modal" role="dialog" aria-modal="true" aria-labelledby="uid-modal-title" hidden>
+      <div class="modal__backdrop" data-modal-close></div>
+      <div class="modal__panel">
+        <button type="button" class="modal__close" data-modal-close aria-label="بستن">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <h2 class="modal__title" id="uid-modal-title">راهنمای یافتن شماره UID</h2>
+        <div class="modal__img-wrap">
+          <img src="assets/images/product/uid-guide.png" alt="محل شماره UID روی جعبه گاردیسان">
+        </div>
+        <div class="modal__body">
+          <p>شماره <strong>UID</strong> روی یکی از وجه‌های کناری جعبه واکسن، در کنار بارکد دوبعدی (Data Matrix) درج شده است.</p>
+          <ul>
+            <li>دو خط اعداد زیر برچسب «UID» را پیدا کنید.</li>
+            <li>هر دو خط را <strong>بدون فاصله</strong> پشت سر هم در فرم وارد کنید (مجموعاً ۲۰ رقم).</li>
+            <li>مثال: خط اول <code dir="ltr">1507201001</code> و خط دوم <code dir="ltr">8958803818</code> می‌شود <code dir="ltr">15072010018958803818</code></li>
+          </ul>
+          <p class="hint">در عکس محصول نیز همین بخش باید به‌وضوح دیده شود.</p>
+        </div>
+      </div>
+    </div>
+
     <footer class="footer">
       <div class="container">
         <div class="footer__logos">
-          <img src="assets/images/logos/logo-gardisun.png" alt="گاردیسان">
-          <img src="assets/images/logos/logo-biosun.png" alt="بیوسان فارمد">
-          <img src="assets/images/logos/logo-macsa.png" alt="MACSA">
+          <a href="https://macsa.ir/fa/" target="_blank" rel="noopener noreferrer"><img src="assets/images/logos/logo-macsa.png" alt="MACSA"></a>
+          <a href="http://gardisun.ir/" target="_blank" rel="noopener noreferrer"><img src="assets/images/logos/logo-gardisun.png" alt="گاردیسان"></a>
+          <a href="https://biosunpharmed.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/logos/logo-biosun.png" alt="بیوسان فارمد"></a>
         </div>
         <p class="footer__disclaimer">اطلاعات شما محرمانه نگهداری می‌شود و صرفاً برای ثبت مشارکت در پویش آیدا استفاده خواهد شد.</p>
         <p class="footer__copy">© ۱۴۰۵ — پویش آیدا</p>

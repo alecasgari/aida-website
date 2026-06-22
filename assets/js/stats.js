@@ -27,8 +27,8 @@
     el.innerHTML =
       '<div class="stats-board__header">' +
         '<span class="stats-board__live"><span class="stats-board__dot" aria-hidden="true"></span>آمار زنده پویش</span>' +
-        '<h2 class="stats-board__title">هر مشارکت، یک سهم از آیدا</h2>' +
-        '<p class="stats-board__desc">به ازای هر ۱۰ مشارکت، ۱ واکسیناسیون رایگان — و این اعداد هر روز بیشتر می‌شوند</p>' +
+        '<h2 class="stats-board__title">هر مشارکت، یک سهم برای آیدا</h2>' +
+        '<p class="stats-board__desc">به ازای هر ۱۰ مشارکت، ۱ واکسیناسیون رایگان؛ و این اعداد هر روز بیشتر می‌شوند</p>' +
       '</div>' +
       '<div class="stats-flow" aria-hidden="true">' +
         '<div class="stats-flow__side stats-flow__side--in">' +

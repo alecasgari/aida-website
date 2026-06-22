@@ -39,13 +39,20 @@
       var errEl = group.querySelector('.error-msg');
       var errMsg = '';
 
-      if (input.required && !value) {
+      if (input.type === 'file') {
+        if (input.required && !input.files.length) {
+          errMsg = 'این فیلد الزامی است.';
+        }
+      } else if (input.required && !value) {
         errMsg = 'این فیلد الزامی است.';
       } else if (field === 'phone' && value && !validatePhone(value)) {
         errMsg = 'شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود.';
       } else if (field === 'age') {
         var age = parseInt(value, 10);
         if (age < 9 || age > 50) errMsg = 'سن باید بین ۹ تا ۵۰ باشد.';
+      } else if (field === 'serial_number' && value) {
+        var uid = value.replace(/\s/g, '');
+        if (!/^\d{20}$/.test(uid)) errMsg = 'شماره UID باید دقیقاً ۲۰ رقم باشد.';
       } else if (field === 'product_photo' && input.files.length) {
         var file = input.files[0];
         if (file.size > MAX_FILE_SIZE) errMsg = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
@@ -84,6 +91,9 @@
     var formData = new FormData(form);
     formData.delete('terms');
     formData.set('phone', formData.get('phone').replace(/\s/g, ''));
+    if (formData.get('serial_number')) {
+      formData.set('serial_number', formData.get('serial_number').replace(/\s/g, ''));
+    }
 
     if (window.AidaUtm) {
       window.AidaUtm.appendToFormData(formData);
@@ -145,6 +155,129 @@
     var form = $('#register-form');
     if (form) {
       form.addEventListener('submit', handleSubmit);
+      initFileDrop();
+      initUidModal();
     }
   });
+
+  function initFileDrop() {
+    var drop = $('#file-drop');
+    var input = $('#product_photo');
+    var empty = $('#file-drop-empty');
+    var preview = $('#file-drop-preview');
+    var previewImg = $('#file-preview-img');
+    var previewName = $('#file-preview-name');
+    var removeBtn = $('#file-remove-btn');
+    var selectBtn = drop && drop.querySelector('.file-drop__btn');
+
+    if (!drop || !input) return;
+
+    function showPreview(file) {
+      if (!file || ALLOWED_TYPES.indexOf(file.type) === -1) return;
+      var url = URL.createObjectURL(file);
+      previewImg.src = url;
+      previewName.textContent = file.name;
+      empty.hidden = true;
+      preview.hidden = false;
+      drop.classList.add('file-drop--filled');
+    }
+
+    function clearPreview() {
+      input.value = '';
+      previewImg.removeAttribute('src');
+      previewName.textContent = '';
+      empty.hidden = false;
+      preview.hidden = true;
+      drop.classList.remove('file-drop--filled');
+    }
+
+    function handleFiles(files) {
+      if (!files || !files.length) return;
+      var file = files[0];
+      if (file.size > MAX_FILE_SIZE) {
+        var group = input.closest('.form-group');
+        if (group) {
+          group.classList.add('is-invalid');
+          var errEl = group.querySelector('.error-msg');
+          if (errEl) errEl.textContent = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
+        }
+        return;
+      }
+      var dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      var group = input.closest('.form-group');
+      if (group) group.classList.remove('is-invalid');
+      showPreview(file);
+    }
+
+    if (selectBtn) {
+      selectBtn.addEventListener('click', function () { input.click(); });
+    }
+
+    drop.addEventListener('click', function (e) {
+      if (e.target.closest('.file-drop__remove') || e.target.closest('.file-drop__btn')) return;
+      if (!preview.hidden) return;
+      input.click();
+    });
+
+    input.addEventListener('change', function () {
+      handleFiles(input.files);
+    });
+
+    if (removeBtn) {
+      removeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        clearPreview();
+      });
+    }
+
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) {
+        e.preventDefault();
+        drop.classList.add('file-drop--drag');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) {
+        e.preventDefault();
+        drop.classList.remove('file-drop--drag');
+      });
+    });
+
+    drop.addEventListener('drop', function (e) {
+      handleFiles(e.dataTransfer.files);
+    });
+  }
+
+  function initUidModal() {
+    var modal = $('#uid-modal');
+    var openBtn = $('#uid-help-btn');
+    if (!modal || !openBtn) return;
+
+    var closers = modal.querySelectorAll('[data-modal-close]');
+
+    function openModal() {
+      modal.hidden = false;
+      document.body.classList.add('modal-open');
+      modal.querySelector('.modal__close').focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove('modal-open');
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', openModal);
+
+    closers.forEach(function (el) {
+      el.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  }
 })();
