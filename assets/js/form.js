@@ -77,7 +77,39 @@
       }
     });
 
+    if (!valid) {
+      trackFormErrors(form);
+    }
+
     return valid;
+  }
+
+  function trackFormErrors(form) {
+    if (!window.AidaAnalytics) return;
+
+    form.querySelectorAll('.form-group.is-invalid[data-field]').forEach(function (group) {
+      var errEl = group.querySelector('.error-msg');
+      var msg = errEl ? errEl.textContent.trim() : '';
+      if (!msg) return;
+
+      window.AidaAnalytics.push('aida_form_error', {
+        page_name: 'register_form',
+        form_id: 'register-form',
+        form_field: group.dataset.field,
+        error_message: msg
+      });
+    });
+  }
+
+  function trackFormError(field, message) {
+    if (!window.AidaAnalytics || !message) return;
+
+    window.AidaAnalytics.push('aida_form_error', {
+      page_name: 'register_form',
+      form_id: 'register-form',
+      form_field: field,
+      error_message: message
+    });
   }
 
   function handleSubmit(e) {
@@ -150,6 +182,13 @@
         });
       })
       .then(function (data) {
+        if (window.AidaAnalytics) {
+          window.AidaAnalytics.push('aida_form_submit', {
+            page_name: 'register_form',
+            form_id: 'register-form'
+          });
+        }
+
         var ref = encodeURIComponent(data.tracking_code || '');
         window.location.href = 'thank-you.html?ref=' + ref;
       })
@@ -212,9 +251,11 @@
       if (file.size > MAX_FILE_SIZE) {
         var group = input.closest('.form-group');
         if (group) {
+          var sizeMsg = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
           group.classList.add('is-invalid');
           var errEl = group.querySelector('.error-msg');
-          if (errEl) errEl.textContent = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
+          if (errEl) errEl.textContent = sizeMsg;
+          trackFormError('product_photo', sizeMsg);
         }
         return;
       }

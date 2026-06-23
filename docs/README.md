@@ -9,6 +9,8 @@
 | [01-campaign-review-and-site-proposal.md](./01-campaign-review-and-site-proposal.md) | **سند اصلی** — بررسی متریال، ساختار سایت، صفحات، فرم، وب‌هوک، تصاویر |
 | [02-file-tree.md](./02-file-tree.md) | ساختار پیشنهادی پوشه‌ها و فایل‌های پروژه |
 | [03-webhook-contract.md](./03-webhook-contract.md) | قرارداد فنی ارسال داده به n8n |
+| [04-n8n-datatable-guide.md](./04-n8n-datatable-guide.md) | راهنمای n8n Data Table + عکس + کد رهگیری |
+| [05-gtm-ga4-analytics-guide.md](./05-gtm-ga4-analytics-guide.md) | **راهنمای کامل GTM، GA4، dataLayer و Search Console** |
 
 ## متریال مرجع
 
