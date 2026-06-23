@@ -24,4 +24,4 @@ User-agent: *
 Allow: /
 Disallow: /thank-you.html
 
-Sitemap: https://iranaida.com/sitemap.xml
+Sitemap: https://www.iranaida.com/sitemap.xml
