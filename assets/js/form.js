@@ -182,15 +182,21 @@
         });
       })
       .then(function (data) {
+        var ref = encodeURIComponent(data.tracking_code || '');
+        var target = 'thank-you.html?ref=' + ref;
+
         if (window.AidaAnalytics) {
           window.AidaAnalytics.push('aida_form_submit', {
             page_name: 'register_form',
-            form_id: 'register-form'
+            form_id: 'register-form',
+            eventCallback: function () {
+              window.location.href = target;
+            },
+            eventTimeout: 2000
           });
+        } else {
+          window.location.href = target;
         }
-
-        var ref = encodeURIComponent(data.tracking_code || '');
-        window.location.href = 'thank-you.html?ref=' + ref;
       })
       .catch(function (err) {
         var msg = err.message || 'خطا در ارسال. لطفاً دوباره تلاش کنید.';
