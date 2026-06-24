@@ -23,5 +23,6 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /thank-you.html
+Disallow: /utm.html
 
 Sitemap: https://www.iranaida.com/sitemap.xml

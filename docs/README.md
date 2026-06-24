@@ -11,6 +11,7 @@
 | [03-webhook-contract.md](./03-webhook-contract.md) | قرارداد فنی ارسال داده به n8n |
 | [04-n8n-datatable-guide.md](./04-n8n-datatable-guide.md) | راهنمای n8n Data Table + عکس + کد رهگیری |
 | [05-gtm-ga4-analytics-guide.md](./05-gtm-ga4-analytics-guide.md) | **راهنمای کامل GTM، GA4، dataLayer و Search Console** |
+| [06-campaign-utm-links.md](./06-campaign-utm-links.md) | **راهنمای تولید لینک UTM برای تیم مارکتینگ** |
 
 ## متریال مرجع
 
