@@ -10,7 +10,8 @@
     'gardisun.html': 'gardisun_product',
     'register.html': 'register_form',
     'thank-you.html': 'thank_you',
-    'utm.html': 'utm_builder'
+    'utm.html': 'utm_builder',
+    'privacy.html': 'privacy_policy'
   };
 
   var FORM_START_KEY = 'aida_form_start_sent';
