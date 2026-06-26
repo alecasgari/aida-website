@@ -1,7 +1,14 @@
-/* Header */
-.header {
+/* Site chrome — campaign bar + header stick together */
+.site-chrome {
   position: sticky;
   top: 0;
+  z-index: 100;
+}
+
+/* Header */
+.header {
+  position: relative;
+  top: auto;
   z-index: 100;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
@@ -56,41 +63,26 @@
   color: var(--color-text-muted);
 }
 
-.header__campaign {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  padding: 0.35rem 0.95rem;
-  border-radius: 999px;
+.campaign-bar {
   background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
-  border: 1px solid rgba(255, 193, 7, 0.55);
+  border-bottom: 1px solid rgba(255, 193, 7, 0.45);
   color: var(--color-primary-darker);
   font-size: 0.78rem;
   font-weight: 600;
-  line-height: 1.35;
-  text-align: center;
-  max-width: min(46vw, 24rem);
-  box-shadow: 0 2px 10px rgba(0, 62, 72, 0.1);
-  z-index: 2;
-  pointer-events: none;
 }
 
-.header__campaign-arrow {
+.campaign-bar__inner {
+  padding: 0.42rem 1.25rem;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.campaign-bar__arrow {
   display: inline-block;
   color: var(--color-primary-dark);
   font-weight: 700;
-  margin: 0 0.12rem;
+  margin: 0 0.15rem;
   transform: scaleX(-1);
-}
-
-.header__logo,
-.header__cta-mobile,
-.header__toggle,
-.header__nav {
-  position: relative;
-  z-index: 3;
 }
 
 .header__nav {
@@ -189,43 +181,13 @@
     font-size: 0.68rem;
   }
 
-  .header__campaign {
+  .campaign-bar {
     font-size: 0.62rem;
-    padding: 0.28rem 0.55rem;
-    max-width: 42vw;
-    line-height: 1.25;
-  }
-}
-
-@media (min-width: 769px) {
-  .header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
   }
 
-  .header__logo {
-    flex: 0 1 auto;
-    max-width: 32%;
-  }
-
-  .header__campaign {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    grid-column: auto;
-    max-width: min(36vw, 22rem);
-    white-space: nowrap;
-    font-size: 0.72rem;
-    padding: 0.32rem 0.75rem;
-  }
-
-  .header__nav {
-    flex: 0 1 auto;
-    justify-content: flex-end;
-    max-width: 38%;
+  .campaign-bar__inner {
+    padding: 0.35rem 0.75rem;
+    line-height: 1.35;
   }
 }
 
