@@ -18,6 +18,7 @@
   justify-content: space-between;
   height: 100%;
   gap: 1rem;
+  position: relative;
 }
 
 .header__logo {
@@ -53,17 +54,43 @@
   font-weight: 400;
   font-size: 0.78rem;
   color: var(--color-text-muted);
-  line-height: 1.35;
-  white-space: normal;
-  max-width: 13.5rem;
 }
 
-.header__brand-arrow {
+.header__campaign {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+  border: 1px solid rgba(255, 193, 7, 0.55);
+  color: var(--color-primary-darker);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  max-width: min(46vw, 24rem);
+  box-shadow: 0 2px 10px rgba(0, 62, 72, 0.1);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.header__campaign-arrow {
   display: inline-block;
   color: var(--color-primary-dark);
   font-weight: 700;
-  margin: 0 0.1rem;
+  margin: 0 0.12rem;
   transform: scaleX(-1);
+}
+
+.header__logo,
+.header__cta-mobile,
+.header__toggle,
+.header__nav {
+  position: relative;
+  z-index: 3;
 }
 
 .header__nav {
@@ -160,8 +187,13 @@
 
   .header__brand-light {
     font-size: 0.68rem;
-    max-width: 9.5rem;
-    line-height: 1.3;
+  }
+
+  .header__campaign {
+    font-size: 0.62rem;
+    padding: 0.28rem 0.55rem;
+    max-width: 42vw;
+    line-height: 1.25;
   }
 }
 
@@ -1231,7 +1263,7 @@
 
 .stats-goal__top strong {
   font-size: 1.32rem;
-  color: #a5d6a7;
+  color: #9fa8da;
   direction: ltr;
   unicode-bidi: embed;
 }
