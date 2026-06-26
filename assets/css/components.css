@@ -199,29 +199,33 @@
 
 @media (min-width: 769px) {
   .header__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
   .header__logo {
-    grid-column: 1;
-    justify-self: start;
+    flex: 0 1 auto;
+    max-width: 32%;
   }
 
   .header__campaign {
-    position: static;
-    transform: none;
-    grid-column: 2;
-    justify-self: center;
-    max-width: 26rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    grid-column: auto;
+    max-width: min(36vw, 22rem);
     white-space: nowrap;
+    font-size: 0.72rem;
+    padding: 0.32rem 0.75rem;
   }
 
   .header__nav {
-    grid-column: 3;
-    justify-self: end;
+    flex: 0 1 auto;
+    justify-content: flex-end;
+    max-width: 38%;
   }
 }
 

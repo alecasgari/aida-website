@@ -5,7 +5,9 @@
   var STATS = {
     participants: 169,
     freeRatio: 10,
-    goal: 100000,
+    goalFirst: 1000,
+    goalSecond: 5000,
+    goalMain: 100000,
     provinces: 2,
     cities: 4
   };
@@ -18,7 +20,9 @@
 
   function calcDerived() {
     var free = Math.floor(STATS.participants / STATS.freeRatio);
-    var progress = STATS.goal > 0 ? Math.min(100, (STATS.participants / STATS.goal) * 100) : 0;
+    var progress = STATS.goalFirst > 0
+      ? Math.min(100, (STATS.participants / STATS.goalFirst) * 100)
+      : 0;
     return { free: free, progress: progress };
   }
 
@@ -52,11 +56,11 @@
       '</div>' +
       '<div class="stats-goal">' +
         '<div class="stats-goal__top">' +
-          '<span>پیشرفت تا هدف ' + faNum(STATS.goal) + ' مشارکت</span>' +
+          '<span>پیشرفت تا هدف اول ' + faNum(STATS.goalFirst) + ' مشارکت</span>' +
           '<strong data-count="' + Math.round(d.progress) + '" data-suffix="%">۰٪</strong>' +
         '</div>' +
         '<div class="stats-goal__track"><div class="stats-goal__fill" style="width:0%" data-width="' + d.progress + '%"></div></div>' +
-        '<p class="stats-goal__hint">با ثبت مشارکت شما، این نوار یک قدم جلوتر می‌رود</p>' +
+        '<p class="stats-goal__hint">هدف دوم: ' + faNum(STATS.goalSecond) + ' مشارکت · هدف اصلی: ' + faNum(STATS.goalMain) + ' مشارکت</p>' +
       '</div>';
   }
 
@@ -159,7 +163,9 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.participants != null) STATS.participants = data.participants;
-        if (data.goal != null) STATS.goal = data.goal;
+        if (data.goalFirst != null) STATS.goalFirst = data.goalFirst;
+        if (data.goalSecond != null) STATS.goalSecond = data.goalSecond;
+        if (data.goalMain != null) STATS.goalMain = data.goalMain;
         if (data.provinces != null) STATS.provinces = data.provinces;
         if (data.cities != null) STATS.cities = data.cities;
         if (data.freeRatio != null) STATS.freeRatio = data.freeRatio;
