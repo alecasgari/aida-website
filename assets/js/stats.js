@@ -3,11 +3,11 @@
 
   /* ── آمار پویش — این اعداد را دستی یا از API به‌روز کنید ── */
   var STATS = {
-    participants: 1500,
+    participants: 169,
     freeRatio: 10,
-    goal: 5000,
-    provinces: 24,
-    cities: 68
+    goal: 100000,
+    provinces: 2,
+    cities: 4
   };
 
   var STATS_API_URL = '';

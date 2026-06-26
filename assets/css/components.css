@@ -197,6 +197,34 @@
   }
 }
 
+@media (min-width: 769px) {
+  .header__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header__logo {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .header__campaign {
+    position: static;
+    transform: none;
+    grid-column: 2;
+    justify-self: center;
+    max-width: 26rem;
+    white-space: nowrap;
+  }
+
+  .header__nav {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
 /* Hero */
 .hero {
   position: relative;
@@ -1263,7 +1291,7 @@
 
 .stats-goal__top strong {
   font-size: 1.32rem;
-  color: #9fa8da;
+  color: #2e7d32;
   direction: ltr;
   unicode-bidi: embed;
 }
