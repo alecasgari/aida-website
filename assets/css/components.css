@@ -1,14 +1,7 @@
-/* Site chrome — campaign bar + header stick together */
-.site-chrome {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
 /* Header */
 .header {
-  position: relative;
-  top: auto;
+  position: sticky;
+  top: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
