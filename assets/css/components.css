@@ -53,6 +53,17 @@
   font-weight: 400;
   font-size: 0.78rem;
   color: var(--color-text-muted);
+  line-height: 1.35;
+  white-space: normal;
+  max-width: 13.5rem;
+}
+
+.header__brand-arrow {
+  display: inline-block;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  margin: 0 0.1rem;
+  transform: scaleX(-1);
 }
 
 .header__nav {
@@ -149,6 +160,8 @@
 
   .header__brand-light {
     font-size: 0.68rem;
+    max-width: 9.5rem;
+    line-height: 1.3;
   }
 }
 
