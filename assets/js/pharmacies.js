@@ -15,11 +15,6 @@
     });
   }
 
-  function formatStock(stock) {
-    if (stock == null) return null;
-    return toFaNum(stock.toLocaleString('en-US'));
-  }
-
   function stockTier(stock) {
     if (stock == null) return '';
     if (stock > 500) return 'high';
@@ -27,11 +22,15 @@
     return 'low';
   }
 
-  function stockLabel(tier) {
-    if (tier === 'high') return 'موجودی زیاد';
-    if (tier === 'medium') return 'موجودی متوسط';
-    if (tier === 'low') return 'موجودی محدود';
-    return '';
+  function stockBadgeHtml() {
+    return (
+      '<span class="pharmacy-badge pharmacy-badge--available">' +
+        '<svg class="pharmacy-badge__check" viewBox="0 0 24 24" aria-hidden="true">' +
+          '<path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg>' +
+        'دارای موجودی' +
+      '</span>'
+    );
   }
 
   function normalizePhone(phone) {
@@ -101,8 +100,6 @@
   }
 
   function renderCard(pharmacy) {
-    var tier = stockTier(pharmacy.stock);
-    var stockText = formatStock(pharmacy.stock);
     var phone = pharmacy.phone || '';
     var tel = normalizePhone(phone);
 
@@ -111,14 +108,13 @@
         '<header class="pharmacy-card__head">' +
           '<h2 class="pharmacy-card__title">' + escapeHtml(pharmacy.name) + '</h2>' +
           '<div class="pharmacy-card__badges">' +
+            stockBadgeHtml() +
             '<span class="pharmacy-badge pharmacy-badge--city">' + escapeHtml(pharmacy.city) + '</span>' +
             (pharmacy.region ? '<span class="pharmacy-badge pharmacy-badge--region">' + escapeHtml(pharmacy.region) + '</span>' : '') +
-            (tier ? '<span class="pharmacy-badge pharmacy-badge--stock pharmacy-badge--' + tier + '">' + stockLabel(tier) + '</span>' : '') +
           '</div>' +
         '</header>' +
         '<div class="pharmacy-card__body">' +
           (pharmacy.address ? '<p class="pharmacy-card__address">' + escapeHtml(pharmacy.address) + '</p>' : '') +
-          (stockText ? '<p class="pharmacy-card__stock">موجودی تقریبی: <strong>' + stockText + '</strong> دوز</p>' : '') +
         '</div>' +
         '<footer class="pharmacy-card__actions">' +
           (tel ? '<a class="btn btn--outline pharmacy-card__btn" href="tel:' + tel + '">تماس: ' + escapeHtml(phone) + '</a>' : '') +
