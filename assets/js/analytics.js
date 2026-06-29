@@ -11,7 +11,10 @@
     'register.html': 'register_form',
     'thank-you.html': 'thank_you',
     'utm.html': 'utm_builder',
-    'privacy.html': 'privacy_policy'
+    'privacy.html': 'privacy_policy',
+    'pharmacies.html': 'pharmacy_directory',
+    'contact.html': 'contact_form',
+    'contact-thank-you.html': 'contact_thank_you'
   };
 
   var FORM_START_KEY = 'aida_form_start_sent';

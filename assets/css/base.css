@@ -42,6 +42,7 @@
   --max-width: 1100px;
   --header-height: 72px;
   --bottom-nav-height: 64px;
+  --pharmacy-bar-height: 60px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 0.28s;
@@ -170,6 +171,14 @@ ul, ol {
   border: 0;
 }
 
+.page-pharmacies .page-wrapper {
+  padding-bottom: var(--pharmacy-bar-height);
+}
+
+.page-pharmacies .footer {
+  padding-bottom: calc(1.5rem + var(--pharmacy-bar-height));
+}
+
 @media (max-width: 768px) {
   .page-wrapper {
     padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
@@ -177,6 +186,14 @@ ul, ol {
 
   .footer {
     padding-bottom: calc(1.5rem + var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page-pharmacies .page-wrapper {
+    padding-bottom: calc(var(--bottom-nav-height) + var(--pharmacy-bar-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page-pharmacies .footer {
+    padding-bottom: calc(1.5rem + var(--bottom-nav-height) + var(--pharmacy-bar-height) + env(safe-area-inset-bottom, 0px));
   }
 }
 
