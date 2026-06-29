@@ -37,6 +37,22 @@
     return (phone || '').replace(/[^\d+]/g, '');
   }
 
+  function formatPhoneDisplay(phone) {
+    var digits = normalizePhone(phone);
+    if (!digits) return '';
+
+    var formatted = digits;
+    if (digits.indexOf('021') === 0 && digits.length > 3) {
+      formatted = '021-' + digits.slice(3);
+    } else if (digits.indexOf('09') === 0 && digits.length === 11) {
+      formatted = digits.slice(0, 4) + '-' + digits.slice(4);
+    } else if (digits.length > 4) {
+      formatted = digits.slice(0, 3) + '-' + digits.slice(3);
+    }
+
+    return toFaNum(formatted);
+  }
+
   function mapsUrl(address) {
     return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address);
   }
@@ -117,7 +133,7 @@
           (pharmacy.address ? '<p class="pharmacy-card__address">' + escapeHtml(pharmacy.address) + '</p>' : '') +
         '</div>' +
         '<footer class="pharmacy-card__actions">' +
-          (tel ? '<a class="btn btn--outline pharmacy-card__btn" href="tel:' + tel + '">تماس: ' + escapeHtml(phone) + '</a>' : '') +
+          (tel ? '<a class="btn btn--outline pharmacy-card__btn" href="tel:' + tel + '"><span class="pharmacy-card__phone-wrap" dir="rtl">تماس: <span class="pharmacy-phone" dir="ltr">' + escapeHtml(formatPhoneDisplay(phone)) + '</span></span></a>' : '') +
           (pharmacy.address ? '<a class="btn btn--primary pharmacy-card__btn" href="' + mapsUrl(pharmacy.address) + '" target="_blank" rel="noopener noreferrer">مسیریابی</a>' : '') +
         '</footer>' +
       '</article>'

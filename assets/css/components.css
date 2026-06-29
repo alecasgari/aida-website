@@ -2394,6 +2394,23 @@ body.modal-open {
   font-size: 0.88rem;
 }
 
+.pharmacy-card__phone-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.pharmacy-phone {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .pharmacy-empty {
   text-align: center;
   padding: 2.5rem 1rem;
