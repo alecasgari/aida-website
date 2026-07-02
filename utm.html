@@ -139,15 +139,23 @@
                     <input type="hidden" id="utm_medium" value="">
                   </div>
 
-                  <div class="utm-field">
+                  <div class="utm-field" id="content-field">
                     <div class="utm-field__label">
-                      <span>۴. جزئیات کانال / آیدی / داروخانه (<span dir="ltr">utm_content</span>)</span>
+                      <span id="content-label">۴. جزئیات کانال / آیدی (<span dir="ltr">utm_content</span>)</span>
                       <span class="utm-field__hint" id="content-hint">حروف انگلیسی کوچک و _</span>
                     </div>
-                    <div class="utm-input-wrap">
-                      <span class="utm-input-wrap__prefix" aria-hidden="true">@</span>
-                      <input type="text" id="utm_content" class="utm-input utm-input--mono" placeholder="tehran_vanak_01 یا aida_official" autocomplete="off">
+                    <div id="pharmacy-content-wrap" class="utm-field--hidden">
+                      <select id="utm_pharmacy" class="utm-input utm-select">
+                        <option value="">داروخانه را انتخاب کنید</option>
+                      </select>
                     </div>
+                    <div id="generic-content-wrap">
+                      <div class="utm-input-wrap">
+                        <span class="utm-input-wrap__prefix" aria-hidden="true">@</span>
+                        <input type="text" id="utm_content_input" class="utm-input utm-input--mono" placeholder="aida_official یا channel_health_iran" autocomplete="off">
+                      </div>
+                    </div>
+                    <input type="hidden" id="utm_content" value="">
                   </div>
 
                   <div class="utm-field">
