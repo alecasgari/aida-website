@@ -73,6 +73,20 @@
   var qrInstance = null;
   var lastQrUrl = '';
   var QR_EXPORT_PX = 1200;
+  var templateImageCache = {};
+  var previewTimer = null;
+
+  var QR_OVERLAYS = {
+    poster: {
+      src: 'assets/images/marketing/poster-qr.jpg?v=6',
+      // پوستر ۴۴۱۹×۶۲۵۰ — QR: ۵۷۵px از چپ، ۱۹۰۵px از بالا، ۱۵۸۵×۱۵۸۵
+      leftPx: 575,
+      topPx: 1905,
+      sizePx: 1585,
+      mime: 'image/jpeg',
+      quality: 0.95
+    }
+  };
 
   function $(id) {
     return document.getElementById(id);
@@ -186,6 +200,9 @@
       wrap.innerHTML = '<p class="utm-qr__placeholder">پس از تکمیل فرم، QR اینجا ساخته می‌شود.</p>';
       lastQrUrl = '';
       if (downloadBtn) downloadBtn.disabled = true;
+      setTemplateDownloadState(false);
+      var previews = $('utm-template-previews');
+      if (previews) previews.hidden = true;
       qrInstance = null;
       return;
     }
@@ -202,6 +219,152 @@
       correctLevel: QRCode.CorrectLevel.H
     });
     if (downloadBtn) downloadBtn.disabled = false;
+    setTemplateDownloadState(true);
+    window.setTimeout(scheduleTemplatePreviews, 350);
+  }
+
+  function setTemplateDownloadState(enabled) {
+    var btn = $('download-poster-btn');
+    if (btn) btn.disabled = !enabled;
+  }
+
+  function scheduleTemplatePreviews() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(updateTemplatePreviews, 250);
+  }
+
+  function getContentSlug() {
+    return $('utm_content').value.trim() || 'link';
+  }
+
+  function getDownloadTimestamp() {
+    var d = new Date();
+    function pad(n) {
+      return n < 10 ? '0' + n : String(n);
+    }
+    return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' +
+      pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+  }
+
+  function buildDownloadFilename(kind, ext) {
+    return kind + '-' + getContentSlug() + '-' + getDownloadTimestamp() + '.' + ext;
+  }
+
+  function loadImage(src) {
+    if (templateImageCache[src]) {
+      return Promise.resolve(templateImageCache[src]);
+    }
+
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () {
+        templateImageCache[src] = img;
+        resolve(img);
+      };
+      img.onerror = function () {
+        reject(new Error('بارگذاری قالب ' + src + ' ممکن نشد.'));
+      };
+      img.src = src;
+    });
+  }
+
+  function getQrSourceDataUrl() {
+    var img = getQrImageElement();
+    if (!img) return null;
+
+    if (img.tagName === 'IMG' && img.src) return img.src;
+    if (img.tagName === 'CANVAS') return img.toDataURL('image/png');
+    return null;
+  }
+
+  function getOverlayRect(template, overlay) {
+    var width = template.naturalWidth || template.width;
+    var height = template.naturalHeight || template.height;
+    var size = overlay.sizePx != null
+      ? overlay.sizePx
+      : Math.round(width * overlay.sizeRatio);
+    var x = overlay.leftPx != null
+      ? overlay.leftPx
+      : Math.round(width * overlay.xRatio);
+    var y;
+    if (overlay.topPx != null) {
+      y = overlay.topPx;
+    } else if (overlay.bottomPx != null) {
+      y = height - overlay.bottomPx - size;
+    } else {
+      y = Math.round(height * overlay.yRatio);
+    }
+    var inset = Math.max(0, Math.round(width * (overlay.insetRatio || 0)));
+    var pad = Math.max(2, Math.round(width * (overlay.padRatio || 0)));
+    return {
+      x: x,
+      y: y,
+      size: size,
+      inset: inset,
+      pad: pad,
+      width: width,
+      height: height
+    };
+  }
+
+  function composeTemplate(templateKey, qrDataUrl) {
+    var overlay = QR_OVERLAYS[templateKey];
+    if (!overlay) return Promise.reject(new Error('قالب نامعتبر است.'));
+
+    return loadImage(overlay.src).then(function (templateImg) {
+      var rect = getOverlayRect(templateImg, overlay);
+      var canvas = document.createElement('canvas');
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Canvas در این مرورگر پشتیبانی نمی‌شود.');
+
+      ctx.drawImage(templateImg, 0, 0, rect.width, rect.height);
+
+      return new Promise(function (resolve, reject) {
+        var qrImg = new Image();
+        qrImg.onload = function () {
+          var inset = rect.inset || 0;
+          var innerX = rect.x + inset;
+          var innerY = rect.y + inset;
+          var innerSize = rect.size - inset * 2;
+          var qrSize = innerSize - rect.pad * 2;
+          var qrX = innerX + rect.pad;
+          var qrY = innerY + rect.pad;
+
+          if (inset || rect.pad) {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(innerX, innerY, innerSize, innerSize);
+          }
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+          resolve({
+            dataUrl: canvas.toDataURL(overlay.mime, overlay.quality),
+            width: rect.width,
+            height: rect.height
+          });
+        };
+        qrImg.onerror = function () {
+          reject(new Error('ترکیب QR با قالب ممکن نشد.'));
+        };
+        qrImg.src = qrDataUrl;
+      });
+    });
+  }
+
+  function updateTemplatePreviews() {
+    var qrDataUrl = getQrSourceDataUrl();
+    var wrap = $('utm-template-previews');
+    if (!qrDataUrl || !wrap) return;
+
+    composeTemplate('poster', qrDataUrl).then(function (result) {
+      var img = $('poster-preview-img');
+      if (img) img.src = result.dataUrl;
+    }).catch(function () {
+      /* previews are optional */
+    });
+
+    wrap.hidden = false;
   }
 
   function getQrImageElement() {
@@ -211,18 +374,30 @@
   }
 
   function downloadQr() {
-    var content = $('utm_content').value.trim() || 'link';
-    var filename = 'aida-qr-' + content + '.png';
-    var img = getQrImageElement();
+    var filename = buildDownloadFilename('qr-code', 'png');
+    var source = getQrSourceDataUrl();
 
-    if (img && img.tagName === 'IMG' && img.src) {
-      exportQrImage(img.src, filename);
-      return;
-    }
+    if (!source) return;
+    exportQrImage(source, filename);
+  }
 
-    if (img && img.tagName === 'CANVAS') {
-      exportQrImage(img.toDataURL('image/png'), filename);
-    }
+  function downloadTemplate(templateKey) {
+    var overlay = QR_OVERLAYS[templateKey];
+    var qrDataUrl = getQrSourceDataUrl();
+    if (!overlay || !qrDataUrl) return;
+
+    var ext = overlay.mime === 'image/jpeg' ? 'jpg' : 'png';
+    var filename = buildDownloadFilename('poster-tracket', ext);
+    var label = 'پوستر';
+
+    composeTemplate(templateKey, qrDataUrl)
+      .then(function (result) {
+        triggerDownload(result.dataUrl, filename);
+        showToast(label + ' دانلود شد', 'فایل ' + result.width + '×' + result.height + ' پیکسل با QR شما آماده چاپ است.');
+      })
+      .catch(function (err) {
+        showToast('خطا در ساخت فایل', err.message || 'لطفاً دوباره تلاش کنید.');
+      });
   }
 
   function exportQrImage(source, filename) {
@@ -367,6 +542,9 @@
     $('copy-link-btn').addEventListener('click', copyLink);
     $('test-link-btn').addEventListener('click', testLink);
     $('download-qr-btn').addEventListener('click', downloadQr);
+    $('download-poster-btn').addEventListener('click', function () {
+      downloadTemplate('poster');
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {

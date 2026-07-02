@@ -172,13 +172,22 @@
                 </div>
 
                 <div class="utm-qr" id="utm-qr-section">
-                  <div class="utm-qr__head">بارکد QR لینک (برای چاپ روی پوستر)</div>
+                  <div class="utm-qr__head">بارکد QR و فایل‌های چاپی</div>
                   <div class="utm-qr__box">
                     <div id="qr-canvas" class="utm-qr__canvas" aria-live="polite">
                       <p class="utm-qr__placeholder">پس از تکمیل فرم، QR اینجا ساخته می‌شود.</p>
                     </div>
-                    <p class="utm-qr__hint">پیش‌نمایش کوچک است؛ فایل PNG با ابعاد <span dir="ltr">1200×1200</span> پیکسل برای چاپ پوستر دانلود می‌شود.</p>
-                    <button type="button" id="download-qr-btn" class="btn btn--outline utm-qr__download" disabled>دانلود QR (PNG 1200px)</button>
+                    <p class="utm-qr__hint">پس از تکمیل فرم، QR و فایل‌های آماده چاپ را دانلود کنید.</p>
+                    <div class="utm-qr__downloads">
+                      <button type="button" id="download-qr-btn" class="btn btn--outline utm-qr__download" disabled>دانلود QR خام (PNG)</button>
+                      <button type="button" id="download-poster-btn" class="btn btn--outline utm-qr__download" disabled>دانلود پوستر با QR</button>
+                    </div>
+                    <div class="utm-qr__previews" id="utm-template-previews" hidden>
+                      <figure class="utm-qr__preview">
+                        <img id="poster-preview-img" alt="پیش‌نمایش پوستر با QR">
+                        <figcaption>پوستر</figcaption>
+                      </figure>
+                    </div>
                   </div>
                 </div>
               </div>
