@@ -477,6 +477,33 @@
 }
 
 /* Form */
+.register-hero {
+  margin-bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.register-hero .section__title {
+  margin-bottom: 0;
+}
+
+.register-hero__pharmacy {
+  min-height: 2.75rem;
+  width: 100%;
+  margin: 0.2rem 0 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  direction: rtl;
+  font-family: 'Pelak', Tahoma, sans-serif;
+  font-weight: 700;
+  color: #003e48;
+  font-size: 1.25rem;
+  line-height: 2.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .form-page {
   max-width: 640px;
   margin: 0 auto;
