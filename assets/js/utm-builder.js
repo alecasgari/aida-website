@@ -82,7 +82,7 @@
 
   var QR_OVERLAYS = {
     poster: {
-      src: 'assets/images/marketing/poster-qr.jpg?v=6',
+      src: 'assets/images/marketing/poster-qr.jpg?v=7',
       // پوستر ۴۴۱۹×۶۲۵۰ — QR: ۵۷۵px از چپ، ۱۹۰۵px از بالا، ۱۵۸۵×۱۵۸۵
       leftPx: 575,
       topPx: 1905,
