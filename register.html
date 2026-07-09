@@ -72,7 +72,7 @@
 
     <main>
       <section class="section">
-        <div class="container">
+        <div class="container register-page">
           <header class="register-hero">
             <h1 class="section__title">ثبت مشارکت در پویش آیدا</h1>
             <p class="register-hero__pharmacy" id="register-pharmacy-label" aria-hidden="true"></p>
@@ -81,7 +81,7 @@
 
           <div class="form-page aida-stats reveal" data-variant="compact"></div>
 
-          <div class="notice notice--warning form-page" style="margin-bottom:2rem">
+          <div class="notice notice--warning form-page register-page__notice">
             <p><strong>توجه:</strong> لطفاً پس از خرید واکسن گاردیسان از داروخانه، عکس بسته‌بندی محصول (قسمتی که شماره UID دارد، همانند عکس نمونه) و شماره UID آن را در فرم زیر وارد کنید.</p>
           </div>
 
@@ -92,8 +92,6 @@
               <p class="hint" style="margin-top:0.35rem">عکس باید جعبه واکسن گاردیسان را به‌وضوح نشان دهد. شماره UID روی جعبه (کنار بارکد دوبعدی) خوانا باشد.</p>
             </div>
           </div>
-
-          <div id="form-alert" class="form-alert form-alert--error form-page" role="alert"></div>
 
           <form id="register-form" class="form-page card" novalidate>
             <div class="form-row">
@@ -111,7 +109,7 @@
 
             <div class="form-group" data-field="phone">
               <label for="phone">شماره تماس (موبایل) <span class="required">*</span></label>
-              <input type="tel" id="phone" name="phone" required placeholder="09121234567" inputmode="numeric" autocomplete="tel">
+              <input type="tel" id="phone" name="phone" required placeholder="09121234567" inputmode="numeric" autocomplete="tel" maxlength="11" pattern="09[0-9]{9}">
               <span class="hint">۱۱ رقم، با ۰۹ شروع شود</span>
               <span class="error-msg"></span>
             </div>
@@ -209,10 +207,24 @@
             <p class="form-disclaimer">ثبت اطلاعات افراد زیر سن قانونی تنها با حضور و مسئولیت والدین یا قیم قانونی مجاز است.</p>
 
             <button type="submit" id="submit-btn" class="btn btn--primary btn--lg" style="width:100%;margin-top:0.5rem">ثبت مشارکت</button>
+            <div id="form-alert" class="form-alert form-alert--error" role="alert"></div>
           </form>
         </div>
       </section>
     </main>
+
+    <div class="modal submit-modal" id="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submit-modal-title" aria-busy="true" hidden>
+      <div class="modal__backdrop"></div>
+      <div class="modal__panel submit-modal__panel">
+        <div class="submit-modal__spinner" aria-hidden="true"></div>
+        <h2 class="modal__title" id="submit-modal-title">در حال ثبت مشارکت</h2>
+        <p class="submit-modal__text">لطفاً این پنجره را نبندید. اطلاعات شما در حال ارسال است.</p>
+        <div class="submit-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="submit-progress__bar" id="submit-progress-bar"></div>
+        </div>
+        <p class="submit-modal__percent" id="submit-progress-label">۰٪</p>
+      </div>
+    </div>
 
     <div class="modal" id="uid-modal" role="dialog" aria-modal="true" aria-labelledby="uid-modal-title" hidden>
       <div class="modal__backdrop" data-modal-close></div>

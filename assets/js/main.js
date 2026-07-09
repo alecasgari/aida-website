@@ -101,10 +101,30 @@
 
     var params = new URLSearchParams(window.location.search);
     var ref = params.get('ref');
+    var firstName = params.get('name');
     var codeEl = document.getElementById('tracking-code');
+    var titleEl = document.getElementById('thankyou-title');
+    var messageEl = document.getElementById('thankyou-message');
+
+    if (firstName) {
+      firstName = decodeURIComponent(firstName).trim();
+    }
 
     if (codeEl && ref) {
       codeEl.textContent = decodeURIComponent(ref);
+    }
+
+    if (firstName && titleEl && messageEl) {
+      titleEl.textContent = firstName + ' عزیز، از تو قدردانیم';
+      messageEl.textContent =
+        'حرکت بزرگی انجام دادی هم برای خودت و هم برای یک دختر دیگر در مناطق کم‌برخوردار. ازت خیلی قدردانی می‌کنیم و مشارکتت بخشی از آینده‌ای امن‌تر برای دختران ایران است.';
+    }
+
+    var thankyou = document.querySelector('.thankyou--celebrate');
+    if (thankyou) {
+      requestAnimationFrame(function () {
+        thankyou.classList.add('is-celebrating');
+      });
     }
 
     var copyBtn = document.getElementById('copy-code');

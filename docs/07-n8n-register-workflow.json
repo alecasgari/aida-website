@@ -1,0 +1,398 @@
+{
+  "name": "Aida Register Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "85da6969-8b96-4483-9808-223a4ce7b19c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-800, 160],
+      "id": "reg-webhook-001",
+      "name": "Webhook",
+      "webhookId": "85da6969-8b96-4483-9808-223a4ce7b19c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst body = item.json.body || item.json;\n\n// Honeypot — فیلد مخفی website\nif (body.website) {\n  return [{ json: { skip: true } }];\n}\n\nconst chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';\nlet tracking_code = 'AIDA-';\nfor (let i = 0; i < 6; i++) {\n  tracking_code += chars[Math.floor(Math.random() * chars.length)];\n}\n\nconst drive_file_name = tracking_code + '-' + String(body.serial_number || '').replace(/\\s/g, '') + '.jpg';\n\nreturn [{\n  json: {\n    skip: false,\n    tracking_code,\n    drive_file_name,\n    first_name: String(body.first_name || '').trim(),\n    last_name: String(body.last_name || '').trim(),\n    phone: String(body.phone || '').replace(/\\s/g, ''),\n    gender: body.gender || '',\n    age: Number(body.age) || 0,\n    purchase_date: body.purchase_date || '',\n    purchase_date_jalali: body.purchase_date_jalali || '',\n    serial_number: String(body.serial_number || '').replace(/\\s/g, ''),\n    product_photo: '',\n    utm_source: body.utm_source || '',\n    utm_medium: body.utm_medium || '',\n    utm_campaign: body.utm_campaign || '',\n    utm_term: body.utm_term || '',\n    utm_content: body.utm_content || '',\n    page_url: body.page_url || '',\n    submitted_at: body.submitted_at || new Date().toISOString(),\n    user_agent: item.json.headers?.['user-agent'] || body.user_agent || ''\n  },\n  binary: item.binary || {}\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-560, 160],
+      "id": "reg-prepare-002",
+      "name": "Prepare Row"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "not-honeypot",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-320, 160],
+      "id": "reg-if-honeypot-003",
+      "name": "Not Honeypot?"
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "dataPropertyName": "product_photo",
+        "width": 1600,
+        "height": 1600,
+        "resizeOption": "maximumArea",
+        "options": {
+          "format": "jpeg",
+          "quality": 82,
+          "fileName": "={{ $json.drive_file_name }}"
+        }
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [-80, 80],
+      "id": "reg-compress-004",
+      "name": "Compress Photo"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "inputDataFieldName": "product_photo",
+        "name": "={{ $('Prepare Row').item.json.drive_file_name }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1o1xmg0uHUAJSlwLGgFbmnhJA7xOzSz4h",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [160, 80],
+      "id": "reg-drive-005",
+      "name": "Upload to Google Drive",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "GOOGLE_DRIVE_CREDENTIAL_ID",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $('Prepare Row').first().json;\nconst drive = $input.first().json;\n\nlet photoUrl = '';\nif (drive && drive.id) {\n  photoUrl = drive.webViewLink || `https://drive.google.com/file/d/${drive.id}/view`;\n}\n\nreturn [{\n  json: {\n    tracking_code: row.tracking_code,\n    first_name: row.first_name,\n    last_name: row.last_name,\n    phone: row.phone,\n    gender: row.gender,\n    age: row.age,\n    purchase_date: row.purchase_date,\n    purchase_date_jalali: row.purchase_date_jalali,\n    serial_number: row.serial_number,\n    product_photo: photoUrl,\n    utm_source: row.utm_source,\n    utm_medium: row.utm_medium,\n    utm_campaign: row.utm_campaign,\n    utm_term: row.utm_term,\n    utm_content: row.utm_content,\n    page_url: row.page_url,\n    submitted_at: row.submitted_at,\n    user_agent: row.user_agent\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [400, 80],
+      "id": "reg-merge-006",
+      "name": "Merge Photo URL"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "wp7uRy8Mmtihpyz2",
+          "mode": "list",
+          "cachedResultName": "aida-website",
+          "cachedResultUrl": "/projects/b5aZbTLpIJQPOBLU/datatables/wp7uRy8Mmtihpyz2"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tracking_code": "={{ $json.tracking_code }}",
+            "first_name": "={{ $json.first_name }}",
+            "last_name": "={{ $json.last_name }}",
+            "phone": "={{ $json.phone }}",
+            "gender": "={{ $json.gender }}",
+            "age": "={{ $json.age }}",
+            "purchase_date": "={{ $json.purchase_date }}",
+            "purchase_date_jalali": "={{ $json.purchase_date_jalali }}",
+            "serial_number": "={{ $json.serial_number }}",
+            "product_photo": "={{ $json.product_photo }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "page_url": "={{ $json.page_url }}",
+            "submitted_at": "={{ $json.submitted_at }}",
+            "user_agent": "={{ $json.user_agent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "tracking_code", "displayName": "tracking_code", "type": "string" },
+            { "id": "first_name", "displayName": "first_name", "type": "string" },
+            { "id": "last_name", "displayName": "last_name", "type": "string" },
+            { "id": "phone", "displayName": "phone", "type": "string" },
+            { "id": "gender", "displayName": "gender", "type": "string" },
+            { "id": "age", "displayName": "age", "type": "number" },
+            { "id": "purchase_date", "displayName": "purchase_date", "type": "dateTime" },
+            { "id": "purchase_date_jalali", "displayName": "purchase_date_jalali", "type": "string" },
+            { "id": "serial_number", "displayName": "serial_number", "type": "string" },
+            { "id": "product_photo", "displayName": "product_photo", "type": "string" },
+            { "id": "utm_source", "displayName": "utm_source", "type": "string" },
+            { "id": "utm_medium", "displayName": "utm_medium", "type": "string" },
+            { "id": "utm_campaign", "displayName": "utm_campaign", "type": "string" },
+            { "id": "utm_term", "displayName": "utm_term", "type": "string" },
+            { "id": "utm_content", "displayName": "utm_content", "type": "string" },
+            { "id": "page_url", "displayName": "page_url", "type": "string" },
+            { "id": "submitted_at", "displayName": "submitted_at", "type": "dateTime" },
+            { "id": "user_agent", "displayName": "user_agent", "type": "string" }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [640, 80],
+      "id": "reg-datatable-007",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_lk03YFFntZZNNzI8Z6EE49nQ47Ad1SnEKjeiL6iuXg",
+          "mode": "list",
+          "cachedResultName": "aida-website",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_lk03YFFntZZNNzI8Z6EE49nQ47Ad1SnEKjeiL6iuXg/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_lk03YFFntZZNNzI8Z6EE49nQ47Ad1SnEKjeiL6iuXg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tracking_code": "={{ $('Merge Photo URL').item.json.tracking_code }}",
+            "first_name": "={{ $('Merge Photo URL').item.json.first_name }}",
+            "last_name": "={{ $('Merge Photo URL').item.json.last_name }}",
+            "phone": "={{ $('Merge Photo URL').item.json.phone }}",
+            "gender": "={{ $('Merge Photo URL').item.json.gender }}",
+            "age": "={{ $('Merge Photo URL').item.json.age }}",
+            "purchase_date": "={{ $('Merge Photo URL').item.json.purchase_date }}",
+            "purchase_date_jalali": "={{ $('Merge Photo URL').item.json.purchase_date_jalali }}",
+            "serial_number": "={{ $('Merge Photo URL').item.json.serial_number }}",
+            "product_photo": "={{ $('Merge Photo URL').item.json.product_photo }}",
+            "utm_source": "={{ $('Merge Photo URL').item.json.utm_source }}",
+            "utm_medium": "={{ $('Merge Photo URL').item.json.utm_medium }}",
+            "utm_campaign": "={{ $('Merge Photo URL').item.json.utm_campaign }}",
+            "utm_term": "={{ $('Merge Photo URL').item.json.utm_term }}",
+            "utm_content": "={{ $('Merge Photo URL').item.json.utm_content }}",
+            "page_url": "={{ $('Merge Photo URL').item.json.page_url }}",
+            "submitted_at": "={{ $('Merge Photo URL').item.json.submitted_at }}",
+            "user_agent": "={{ $('Merge Photo URL').item.json.user_agent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "tracking_code", "displayName": "tracking_code", "type": "string", "canBeUsedToMatch": true },
+            { "id": "first_name", "displayName": "first_name", "type": "string", "canBeUsedToMatch": true },
+            { "id": "last_name", "displayName": "last_name", "type": "string", "canBeUsedToMatch": true },
+            { "id": "phone", "displayName": "phone", "type": "string", "canBeUsedToMatch": true },
+            { "id": "gender", "displayName": "gender", "type": "string", "canBeUsedToMatch": true },
+            { "id": "age", "displayName": "age", "type": "string", "canBeUsedToMatch": true },
+            { "id": "purchase_date", "displayName": "purchase_date", "type": "string", "canBeUsedToMatch": true },
+            { "id": "purchase_date_jalali", "displayName": "purchase_date_jalali", "type": "string", "canBeUsedToMatch": true },
+            { "id": "serial_number", "displayName": "serial_number", "type": "string", "canBeUsedToMatch": true },
+            { "id": "product_photo", "displayName": "product_photo", "type": "string", "canBeUsedToMatch": true },
+            { "id": "utm_source", "displayName": "utm_source", "type": "string", "canBeUsedToMatch": true },
+            { "id": "utm_medium", "displayName": "utm_medium", "type": "string", "canBeUsedToMatch": true },
+            { "id": "utm_campaign", "displayName": "utm_campaign", "type": "string", "canBeUsedToMatch": true },
+            { "id": "utm_term", "displayName": "utm_term", "type": "string", "canBeUsedToMatch": true },
+            { "id": "utm_content", "displayName": "utm_content", "type": "string", "canBeUsedToMatch": true },
+            { "id": "page_url", "displayName": "page_url", "type": "string", "canBeUsedToMatch": true },
+            { "id": "submitted_at", "displayName": "submitted_at", "type": "string", "canBeUsedToMatch": true },
+            { "id": "user_agent", "displayName": "user_agent", "type": "string", "canBeUsedToMatch": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [880, 80],
+      "id": "reg-sheets-008",
+      "name": "Google Sheets",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"tracking_code\": \"{{ $('Merge Photo URL').item.json.tracking_code }}\",\n  \"first_name\": \"{{ $('Merge Photo URL').item.json.first_name }}\",\n  \"message\": \"با تشکر از مشارکت شما در پویش آیدا.\"\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [1120, 160],
+      "id": "reg-respond-009",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"tracking_code\": \"AIDA-IGNORED\",\n  \"message\": \"با تشکر از مشارکت شما در پویش آیدا.\"\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [-80, 280],
+      "id": "reg-respond-honeypot-010",
+      "name": "Respond Honeypot"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $('Prepare Row').first().json;\nconst errItem = $input.first();\nconst err = errItem.json || {};\n\nreturn [{\n  json: {\n    success: false,\n    error_code: 'photo_upload_failed',\n    message: 'آپلود عکس با مشکل مواجه شد. لطفاً ۱۵ ثانیه دیگر دوباره تلاش کنید.',\n    tracking_code: row.tracking_code || '',\n    detail: err.message || err.error || err.description || 'drive_upload_failed'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [400, 240],
+      "id": "reg-error-drive-011",
+      "name": "Handle Drive Error"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $('Merge Photo URL').first().json;\nconst errItem = $input.first();\nconst err = errItem.json || {};\n\nreturn [{\n  json: {\n    success: false,\n    error_code: 'sheet_save_failed',\n    message: 'ذخیره گزارش با مشکل مواجه شد. لطفاً ۱۵ ثانیه دیگر دوباره تلاش کنید.',\n    tracking_code: row.tracking_code || '',\n    detail: err.message || err.error || err.description || 'sheet_save_failed'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 240],
+      "id": "reg-error-sheets-012",
+      "name": "Handle Sheets Error"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": false,\n  \"error_code\": \"{{ $json.error_code }}\",\n  \"message\": \"{{ $json.message }}\",\n  \"tracking_code\": \"{{ $json.tracking_code }}\"\n}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [1360, 240],
+      "id": "reg-respond-error-013",
+      "name": "Respond Error"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Prepare Row", "type": "main", "index": 0 }]]
+    },
+    "Prepare Row": {
+      "main": [[{ "node": "Not Honeypot?", "type": "main", "index": 0 }]]
+    },
+    "Not Honeypot?": {
+      "main": [
+        [{ "node": "Compress Photo", "type": "main", "index": 0 }],
+        [{ "node": "Respond Honeypot", "type": "main", "index": 0 }]
+      ]
+    },
+    "Compress Photo": {
+      "main": [[{ "node": "Upload to Google Drive", "type": "main", "index": 0 }]]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [{ "node": "Merge Photo URL", "type": "main", "index": 0 }],
+        [{ "node": "Handle Drive Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "Merge Photo URL": {
+      "main": [[{ "node": "Insert row", "type": "main", "index": 0 }]]
+    },
+    "Insert row": {
+      "main": [[{ "node": "Google Sheets", "type": "main", "index": 0 }]]
+    },
+    "Google Sheets": {
+      "main": [
+        [{ "node": "Respond to Webhook", "type": "main", "index": 0 }],
+        [{ "node": "Handle Sheets Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "Handle Drive Error": {
+      "main": [[{ "node": "Respond Error", "type": "main", "index": 0 }]]
+    },
+    "Handle Sheets Error": {
+      "main": [[{ "node": "Respond Error", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timezone": "Asia/Dubai",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

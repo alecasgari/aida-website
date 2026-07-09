@@ -1,14 +1,28 @@
 (function () {
   'use strict';
 
-  // TODO: URL webhook n8n را اینجا قرار دهید
   var WEBHOOK_URL = 'https://n8n.alecasgari.com/webhook/85da6969-8b96-4483-9808-223a4ce7b19c';
 
   var MAX_FILE_SIZE = 5 * 1024 * 1024;
   var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  var SUBMIT_LABEL = 'ثبت مشارکت';
+  var COOLDOWN_SEC = 15;
+  var PROGRESS_MS = 20000;
+
+  var submitState = {
+    progressTimer: null,
+    progressStart: 0,
+    cooldownTimer: null
+  };
 
   function $(sel, ctx) {
     return (ctx || document).querySelector(sel);
+  }
+
+  function toFaDigits(str) {
+    return String(str).replace(/\d/g, function (d) {
+      return '۰۱۲۳۴۵۶۷۸۹'[d];
+    });
   }
 
   function showAlert(el, message) {
@@ -23,6 +37,39 @@
 
   function validatePhone(value) {
     return /^09\d{9}$/.test(value.replace(/\s/g, ''));
+  }
+
+  function sanitizePhone(raw) {
+    var digits = (raw || '').replace(/[^\d]/g, '');
+
+    if (digits.length === 10 && digits.charAt(0) === '9') {
+      digits = '0' + digits;
+    }
+
+    if (digits.length > 0 && digits.charAt(0) !== '0') {
+      digits = '';
+    }
+
+    if (digits.length > 1 && digits.charAt(1) !== '9') {
+      digits = digits.slice(0, 1);
+    }
+
+    return digits.slice(0, 11);
+  }
+
+  function initPhoneInput() {
+    var phoneInput = $('#phone');
+    if (!phoneInput) return;
+
+    phoneInput.addEventListener('input', function () {
+      phoneInput.value = sanitizePhone(phoneInput.value);
+    });
+
+    phoneInput.addEventListener('paste', function (e) {
+      e.preventDefault();
+      var pasted = (e.clipboardData || window.clipboardData).getData('text');
+      phoneInput.value = sanitizePhone(pasted);
+    });
   }
 
   function validateForm(form) {
@@ -112,6 +159,115 @@
     });
   }
 
+  function stopProgress() {
+    if (submitState.progressTimer) {
+      clearInterval(submitState.progressTimer);
+      submitState.progressTimer = null;
+    }
+  }
+
+  function setProgress(percent) {
+    var bar = $('#submit-progress-bar');
+    var label = $('#submit-progress-label');
+    var wrap = document.querySelector('.submit-progress');
+    var p = Math.max(0, Math.min(100, percent));
+
+    if (bar) bar.style.width = p + '%';
+    if (label) label.textContent = toFaDigits(Math.floor(p)) + '٪';
+    if (wrap) wrap.setAttribute('aria-valuenow', String(Math.floor(p)));
+  }
+
+  function openSubmitModal() {
+    var modal = $('#submit-modal');
+    if (!modal) return;
+
+    setProgress(0);
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+
+    submitState.progressStart = Date.now();
+    stopProgress();
+    submitState.progressTimer = setInterval(function () {
+      var elapsed = Date.now() - submitState.progressStart;
+      var p = (elapsed / PROGRESS_MS) * 100;
+      setProgress(p);
+      if (p >= 100) stopProgress();
+    }, 80);
+  }
+
+  function closeSubmitModal() {
+    var modal = $('#submit-modal');
+    if (!modal) return;
+
+    modal.hidden = true;
+    document.body.classList.remove('modal-open');
+    stopProgress();
+  }
+
+  function completeProgress() {
+    setProgress(100);
+    stopProgress();
+  }
+
+  function startCooldown(btn) {
+    var sec = COOLDOWN_SEC;
+    btn.disabled = true;
+    btn.textContent = 'تلاش مجدد تا ' + toFaDigits(sec) + ' ثانیه';
+
+    if (submitState.cooldownTimer) {
+      clearInterval(submitState.cooldownTimer);
+    }
+
+    submitState.cooldownTimer = setInterval(function () {
+      sec -= 1;
+      if (sec <= 0) {
+        clearInterval(submitState.cooldownTimer);
+        submitState.cooldownTimer = null;
+        btn.disabled = false;
+        btn.textContent = SUBMIT_LABEL;
+      } else {
+        btn.textContent = 'تلاش مجدد تا ' + toFaDigits(sec) + ' ثانیه';
+      }
+    }, 1000);
+  }
+
+  function resolveErrorMessage(err, data) {
+    if (data && data.message) return data.message;
+
+    var msg = (err && err.message) ? err.message : 'خطا در ارسال. لطفاً دوباره تلاش کنید.';
+
+    if (data && data.error_code === 'photo_upload_failed') {
+      return 'آپلود عکس با مشکل مواجه شد. لطفاً ۱۵ ثانیه دیگر دوباره تلاش کنید.';
+    }
+    if (data && data.error_code === 'sheet_save_failed') {
+      return 'ذخیره گزارش با مشکل مواجه شد. لطفاً ۱۵ ثانیه دیگر دوباره تلاش کنید.';
+    }
+    if (err && err.name === 'TypeError' && msg.indexOf('fetch') !== -1) {
+      return 'خطای شبکه. اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.';
+    }
+
+    return msg;
+  }
+
+  function redirectToThankYou(data, firstName) {
+    var ref = encodeURIComponent(data.tracking_code || '');
+    var name = encodeURIComponent(firstName || data.first_name || '');
+    var target = 'thank-you.html?ref=' + ref + '&name=' + name;
+
+    if (window.AidaAnalytics) {
+      window.AidaAnalytics.push('aida_form_submit', {
+        page_name: 'register_form',
+        form_id: 'register-form',
+        eventCallback: function () {
+          window.location.href = target;
+        },
+        eventTimeout: 2000
+      });
+    } else {
+      window.location.href = target;
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     var form = e.target;
@@ -121,7 +277,6 @@
     hideAlert(alertEl);
 
     if ($('#website').value) return;
-
     if (!validateForm(form)) return;
 
     if (WEBHOOK_URL.indexOf('YOUR-N8N-DOMAIN') !== -1) {
@@ -130,6 +285,8 @@
       alertEl.classList.add('form-alert--error', 'is-visible');
       return;
     }
+
+    var firstName = ($('#first_name') && $('#first_name').value.trim()) || '';
 
     var formData = new FormData(form);
     formData.delete('terms');
@@ -148,6 +305,7 @@
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'در حال ارسال...';
+    openSubmitModal();
 
     fetch(WEBHOOK_URL, {
       method: 'POST',
@@ -158,56 +316,55 @@
           var data = {};
           try {
             data = text ? JSON.parse(text) : {};
-          } catch (e) {
-            throw new Error('پاسخ سرور نامعتبر بود. لطفاً دوباره تلاش کنید.');
+          } catch (parseErr) {
+            var invalid = new Error('پاسخ سرور نامعتبر بود. لطفاً دوباره تلاش کنید.');
+            invalid.parsed = {};
+            throw invalid;
           }
 
-          if (!res.ok) {
+          if (!res.ok || data.success === false) {
             var serverMsg = data.message || data.error || text;
             if (serverMsg && serverMsg.indexOf('Unused Respond to Webhook') !== -1) {
-              throw new Error('تنظیمات webhook در n8n ناقص است: Response Mode باید «Using Respond to Webhook Node» باشد.');
+              serverMsg = 'تنظیمات webhook در n8n ناقص است.';
             }
-            throw new Error(serverMsg || 'خطا در ارسال اطلاعات (کد ' + res.status + ').');
+            var fail = new Error(serverMsg || 'خطا در ارسال اطلاعات (کد ' + res.status + ').');
+            fail.parsed = data;
+            throw fail;
           }
 
           if (data.message === 'Workflow was started' && !data.success) {
-            throw new Error('webhook هنوز پاسخ JSON برنمی‌گرداند. در n8n حالت Respond را روی «Respond to Webhook Node» بگذارید.');
+            throw new Error('webhook هنوز پاسخ JSON برنمی‌گرداند.');
           }
 
           if (!data.success) {
-            throw new Error(data.message || 'خطا در ارسال اطلاعات.');
+            var noSuccess = new Error(data.message || 'خطا در ارسال اطلاعات.');
+            noSuccess.parsed = data;
+            throw noSuccess;
           }
 
           return data;
         });
       })
       .then(function (data) {
-        var ref = encodeURIComponent(data.tracking_code || '');
-        var target = 'thank-you.html?ref=' + ref;
+        completeProgress();
 
-        if (window.AidaAnalytics) {
-          window.AidaAnalytics.push('aida_form_submit', {
-            page_name: 'register_form',
-            form_id: 'register-form',
-            eventCallback: function () {
-              window.location.href = target;
-            },
-            eventTimeout: 2000
-          });
-        } else {
-          window.location.href = target;
-        }
+        setTimeout(function () {
+          closeSubmitModal();
+          redirectToThankYou(data, firstName);
+        }, 450);
       })
       .catch(function (err) {
-        var msg = err.message || 'خطا در ارسال. لطفاً دوباره تلاش کنید.';
-        if (err.name === 'TypeError' && msg.indexOf('fetch') !== -1) {
-          msg = 'خطای CORS یا شبکه: webhook باید Access-Control-Allow-Origin را برای دامنه سایت برگرداند.';
-        }
+        closeSubmitModal();
+
+        var data = err.parsed || {};
+        var msg = resolveErrorMessage(err, data);
+
         showAlert(alertEl, msg);
         alertEl.classList.remove('form-alert--success');
         alertEl.classList.add('form-alert--error', 'is-visible');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ثبت مشارکت';
+
+        trackFormError('submit', msg);
+        startCooldown(submitBtn);
       });
   }
 
@@ -215,6 +372,7 @@
     var form = $('#register-form');
     if (form) {
       form.addEventListener('submit', handleSubmit);
+      initPhoneInput();
       initFileDrop();
       initUidModal();
     }

@@ -73,12 +73,22 @@
 
     <main>
       <section class="section">
-        <div class="container thankyou">
-          <div class="thankyou__icon" aria-hidden="true">✓</div>
-          <h1>با تشکر از مشارکت شما</h1>
-          <p>اطلاعات شما با موفقیت در پویش آیدا ثبت شد. مشارکت شما بخشی از حرکت اجتماعی برای دسترسی عادلانه به واکسیناسیون HPV است.</p>
+        <div class="container thankyou thankyou--celebrate">
+          <div class="thankyou__confetti" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span>
+          </div>
 
-          <p style="margin-top:1.5rem;font-weight:600">کد رهگیری شما:</p>
+          <div class="thankyou__icon-wrap">
+            <div class="thankyou__rings" aria-hidden="true"></div>
+            <div class="thankyou__icon" aria-hidden="true">✓</div>
+          </div>
+
+          <h1 id="thankyou-title">با تشکر از مشارکت شما</h1>
+          <p id="thankyou-message" class="thankyou__message">اطلاعات شما با موفقیت در پویش آیدا ثبت شد. مشارکت شما بخشی از حرکت اجتماعی برای دسترسی عادلانه به واکسیناسیون HPV است.</p>
+
+          <p class="thankyou__code-label">کد رهگیری شما:</p>
           <div id="tracking-code" class="thankyou__code">—</div>
           <button type="button" id="copy-code" class="btn btn--outline">کپی کد</button>
 
