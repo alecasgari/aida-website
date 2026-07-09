@@ -82,15 +82,11 @@
     if (window.AidaAnalytics) {
       window.AidaAnalytics.push('aida_form_submit', {
         page_name: 'contact_form',
-        form_id: 'contact-form',
-        eventCallback: function () {
-          window.location.href = THANK_YOU_URL;
-        },
-        eventTimeout: 2000
+        form_id: 'contact-form'
       });
-    } else {
-      window.location.href = THANK_YOU_URL;
     }
+
+    window.location.replace(THANK_YOU_URL);
   }
 
   function handleSubmit(e) {
