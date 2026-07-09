@@ -4,6 +4,46 @@
   var DATA_URL = 'assets/data/pharmacies.json';
   var allPharmacies = [];
   var debounceTimer;
+  var navAddress = '';
+
+  var NAV_APPS = [
+    {
+      id: 'google',
+      name: 'گوگل مپ',
+      color: '#4285F4',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5" fill="#fff"/></svg>',
+      url: function (address) {
+        return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address);
+      }
+    },
+    {
+      id: 'balad',
+      name: 'بلد',
+      color: '#1E4B8F',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="#1E4B8F"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="sans-serif">B</text></svg>',
+      url: function (address) {
+        return 'https://balad.ir/search?q=' + encodeURIComponent(address);
+      }
+    },
+    {
+      id: 'neshan',
+      name: 'نشان',
+      color: '#F05A24',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="#F05A24"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">N</text></svg>',
+      url: function (address) {
+        return 'https://neshan.org/maps/search/' + encodeURIComponent(address);
+      }
+    },
+    {
+      id: 'snapp',
+      name: 'اسنپ',
+      color: '#00D170',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="#00D170"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="sans-serif">Sn</text></svg>',
+      url: function (address) {
+        return 'https://app.snapp.taxi/deeplink/map_search?query=' + encodeURIComponent(address);
+      }
+    }
+  ];
 
   function $(sel) {
     return document.querySelector(sel);
@@ -51,10 +91,6 @@
     }
 
     return toFaNum(formatted);
-  }
-
-  function mapsUrl(address) {
-    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address);
   }
 
   function uniqueSorted(list, key) {
@@ -134,7 +170,7 @@
         '</div>' +
         '<footer class="pharmacy-card__actions">' +
           (tel ? '<a class="btn btn--outline pharmacy-card__btn" href="tel:' + tel + '"><span class="pharmacy-card__phone-wrap" dir="rtl">تماس: <span class="pharmacy-phone" dir="ltr">' + escapeHtml(formatPhoneDisplay(phone)) + '</span></span></a>' : '') +
-          (pharmacy.address ? '<a class="btn btn--primary pharmacy-card__btn" href="' + mapsUrl(pharmacy.address) + '" target="_blank" rel="noopener noreferrer">مسیریابی</a>' : '') +
+          (pharmacy.address ? '<button type="button" class="btn btn--primary pharmacy-card__btn pharmacy-card__nav-btn" data-pharmacy-id="' + pharmacy.id + '">مسیریابی</button>' : '') +
         '</footer>' +
       '</article>'
     );
@@ -166,6 +202,64 @@
     }
     badge.hidden = false;
     badge.textContent = toFaNum(count);
+  }
+
+  function renderNavApps(address) {
+    var container = $('#pharmacy-nav-apps');
+    if (!container) return;
+    container.innerHTML = NAV_APPS.map(function (app) {
+      return (
+        '<a class="nav-modal__app" href="' + app.url(address) + '" target="_blank" rel="noopener noreferrer" style="--nav-app-color:' + app.color + '">' +
+          '<span class="nav-modal__app-icon">' + app.icon + '</span>' +
+          '<span class="nav-modal__app-name">' + app.name + '</span>' +
+        '</a>'
+      );
+    }).join('');
+  }
+
+  function openNavModal(pharmacyId) {
+    var pharmacy = allPharmacies.find(function (p) { return String(p.id) === String(pharmacyId); });
+    if (!pharmacy || !pharmacy.address) return;
+
+    navAddress = pharmacy.address;
+    var modal = $('#pharmacy-nav-modal');
+    var addressEl = $('#pharmacy-nav-address');
+    if (!modal) return;
+
+    if (addressEl) addressEl.textContent = pharmacy.address;
+    renderNavApps(pharmacy.address);
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+  }
+
+  function closeNavModal() {
+    var modal = $('#pharmacy-nav-modal');
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+
+  function initNavModal() {
+    var modal = $('#pharmacy-nav-modal');
+    if (!modal) return;
+
+    modal.querySelectorAll('[data-nav-modal-close]').forEach(function (el) {
+      el.addEventListener('click', closeNavModal);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeNavModal();
+    });
+  }
+
+  function initGridClicks() {
+    var grid = $('#pharmacy-grid');
+    if (!grid) return;
+    grid.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-pharmacy-id]');
+      if (!btn) return;
+      openNavModal(btn.getAttribute('data-pharmacy-id'));
+    });
   }
 
   function render() {
@@ -263,6 +357,8 @@
     if (modalResetBtn) modalResetBtn.addEventListener('click', resetFilters);
 
     initModal();
+    initNavModal();
+    initGridClicks();
     render();
   }
 
