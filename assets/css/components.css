@@ -2206,6 +2206,19 @@ body.modal-open {
   pointer-events: auto;
 }
 
+.file-drop__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.file-drop__actions .file-drop__btn {
+  flex: 1 1 9.5rem;
+  max-width: 100%;
+}
+
 .btn--sm {
   padding: 0.45rem 1rem;
   font-size: 0.88rem;

@@ -4,7 +4,7 @@
   var WEBHOOK_URL = 'https://n8n.alecasgari.com/webhook/85da6969-8b96-4483-9808-223a4ce7b19c';
 
   var MAX_FILE_SIZE = 5 * 1024 * 1024;
-  var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
   var SUBMIT_LABEL = 'ثبت مشارکت';
   var COOLDOWN_SEC = 15;
   var PROGRESS_MS = 20000;
@@ -33,6 +33,13 @@
   function hideAlert(el) {
     el.classList.remove('is-visible');
     el.textContent = '';
+  }
+
+  function isAllowedImage(file) {
+    if (!file) return false;
+    if (ALLOWED_TYPES.indexOf(file.type) !== -1) return true;
+    if (!file.type && /\.(jpe?g|png|webp)$/i.test(file.name || '')) return true;
+    return false;
   }
 
   function validatePhone(value) {
@@ -381,20 +388,23 @@
   function initFileDrop() {
     var drop = $('#file-drop');
     var input = $('#product_photo');
+    var cameraInput = $('#product_photo_camera');
+    var galleryInput = $('#product_photo_gallery');
     var empty = $('#file-drop-empty');
     var preview = $('#file-drop-preview');
     var previewImg = $('#file-preview-img');
     var previewName = $('#file-preview-name');
     var removeBtn = $('#file-remove-btn');
-    var selectBtn = drop && drop.querySelector('.file-drop__btn');
+    var cameraBtn = drop && drop.querySelector('.file-drop__btn--camera');
+    var galleryBtn = drop && drop.querySelector('.file-drop__btn--gallery');
 
-    if (!drop || !input) return;
+    if (!drop || !input || !cameraInput || !galleryInput) return;
 
     function showPreview(file) {
-      if (!file || ALLOWED_TYPES.indexOf(file.type) === -1) return;
+      if (!isAllowedImage(file)) return;
       var url = URL.createObjectURL(file);
       previewImg.src = url;
-      previewName.textContent = file.name;
+      previewName.textContent = file.name || 'عکس دوربین';
       empty.hidden = true;
       preview.hidden = false;
       drop.classList.add('file-drop--filled');
@@ -402,6 +412,8 @@
 
     function clearPreview() {
       input.value = '';
+      cameraInput.value = '';
+      galleryInput.value = '';
       previewImg.removeAttribute('src');
       previewName.textContent = '';
       empty.hidden = false;
@@ -409,40 +421,64 @@
       drop.classList.remove('file-drop--filled');
     }
 
-    function handleFiles(files) {
+    function handleFiles(files, sourceInput) {
       if (!files || !files.length) return;
       var file = files[0];
-      if (file.size > MAX_FILE_SIZE) {
+
+      if (!isAllowedImage(file)) {
         var group = input.closest('.form-group');
         if (group) {
-          var sizeMsg = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
+          var typeMsg = 'فرمت مجاز: JPG، PNG یا WebP';
           group.classList.add('is-invalid');
-          var errEl = group.querySelector('.error-msg');
+          var typeErr = group.querySelector('.error-msg');
+          if (typeErr) typeErr.textContent = typeMsg;
+          trackFormError('product_photo', typeMsg);
+        }
+        if (sourceInput) sourceInput.value = '';
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        var sizeGroup = input.closest('.form-group');
+        if (sizeGroup) {
+          var sizeMsg = 'حجم عکس نباید بیشتر از ۵ مگابایت باشد.';
+          sizeGroup.classList.add('is-invalid');
+          var errEl = sizeGroup.querySelector('.error-msg');
           if (errEl) errEl.textContent = sizeMsg;
           trackFormError('product_photo', sizeMsg);
         }
+        if (sourceInput) sourceInput.value = '';
         return;
       }
+
       var dt = new DataTransfer();
       dt.items.add(file);
       input.files = dt.files;
-      var group = input.closest('.form-group');
-      if (group) group.classList.remove('is-invalid');
+      var validGroup = input.closest('.form-group');
+      if (validGroup) validGroup.classList.remove('is-invalid');
       showPreview(file);
     }
 
-    if (selectBtn) {
-      selectBtn.addEventListener('click', function () { input.click(); });
+    function bindPicker(picker, sourceInput) {
+      if (!picker || !sourceInput) return;
+
+      picker.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sourceInput.click();
+      });
+
+      sourceInput.addEventListener('change', function () {
+        handleFiles(sourceInput.files, sourceInput);
+      });
     }
+
+    bindPicker(cameraBtn, cameraInput);
+    bindPicker(galleryBtn, galleryInput);
 
     drop.addEventListener('click', function (e) {
       if (e.target.closest('.file-drop__remove') || e.target.closest('.file-drop__btn')) return;
       if (!preview.hidden) return;
-      input.click();
-    });
-
-    input.addEventListener('change', function () {
-      handleFiles(input.files);
+      galleryInput.click();
     });
 
     if (removeBtn) {

@@ -171,14 +171,19 @@
             <div class="form-group" data-field="product_photo">
               <label>عکس محصول (جعبه واکسن) <span class="required">*</span></label>
               <div class="file-drop" id="file-drop">
-                <input type="file" id="product_photo" name="product_photo" required accept="image/jpeg,image/png,image/webp" class="file-drop__input">
+                <input type="file" id="product_photo" name="product_photo" required accept="image/jpeg,image/png,image/webp" class="file-drop__input" tabindex="-1" aria-hidden="true">
+                <input type="file" id="product_photo_camera" accept="image/*" capture="environment" class="file-drop__input" tabindex="-1" aria-hidden="true">
+                <input type="file" id="product_photo_gallery" accept="image/jpeg,image/png,image/webp" class="file-drop__input" tabindex="-1" aria-hidden="true">
                 <div class="file-drop__empty" id="file-drop-empty">
                   <svg class="file-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                     <path d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/>
                   </svg>
-                  <p class="file-drop__title">عکس را اینجا بکشید یا انتخاب کنید</p>
-                  <p class="file-drop__hint">JPG، PNG یا WebP — حداکثر ۵ مگابایت</p>
-                  <button type="button" class="btn btn--outline btn--sm file-drop__btn">انتخاب فایل</button>
+                  <p class="file-drop__title">عکس جعبه واکسن را بارگذاری کنید</p>
+                  <p class="file-drop__hint">با دوربین عکس بگیرید یا از گالری انتخاب کنید — JPG، PNG یا WebP، حداکثر ۵ مگابایت</p>
+                  <div class="file-drop__actions">
+                    <button type="button" class="btn btn--primary btn--sm file-drop__btn file-drop__btn--camera">گرفتن عکس با دوربین</button>
+                    <button type="button" class="btn btn--outline btn--sm file-drop__btn file-drop__btn--gallery">انتخاب از گالری</button>
+                  </div>
                 </div>
                 <div class="file-drop__preview" id="file-drop-preview" hidden>
                   <img id="file-preview-img" alt="پیش‌نمایش عکس محصول">
