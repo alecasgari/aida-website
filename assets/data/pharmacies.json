@@ -1,95 +1,142 @@
 {
-  "updated_at": "2026-06-29",
+  "updated_at": "2026-07-10",
+  "source": "اطلاعات داروخانه ها برای سایت آیدا 19.04.1405.xlsx",
   "pharmacies": [
     {
       "id": 1,
-      "slug": "dr_kaveh_elvandi",
+      "slug": "pharmacy_1",
       "name": "دکتر کاوه (دکتر الوندی)",
       "city": "تهران",
       "phone": "021-33481104",
       "region": "جنوب شرق تهران",
       "address": "تهران، شهرک مسعودیه، خ محمدکاظم بین بلوار ابومسلم خراسانی و مهاجرانی، پ364",
-      "stock": 5000
+      "maps_url": "https://maps.app.goo.gl/7ZhUk3vtoDHsW9zv8?g_st=ic"
     },
     {
       "id": 2,
-      "slug": "dr_salem",
+      "slug": "pharmacy_2",
       "name": "دکتر سالم",
       "city": "تهران",
       "phone": "021-47908888",
       "region": "غرب تهران",
       "address": "تهران، میدان دوم صادقیه، بزرگراه کاشانی، پلاک2",
-      "stock": 1000
+      "maps_url": "https://maps.app.goo.gl/7ZhUk3vtoDHsW9zv8?g_st=ic"
     },
     {
       "id": 3,
-      "slug": "dr_saboor_5_shahrivar",
+      "slug": "pharmacy_3",
       "name": "پنجم شهریور ( دکتر صبور)",
       "city": "تهران",
       "phone": "021-66345847",
       "region": "شمال تهران",
       "address": "تهران، شیخ بهایی، کارگر جنوبی، پایین تر از میدان پاستور",
-      "stock": 500
+      "maps_url": "https://maps.app.goo.gl/sXGpr8Men61yPyz5A?g_st=ic"
     },
     {
       "id": 4,
-      "slug": "dr_saboor",
+      "slug": "pharmacy_4",
       "name": "دکتر صبور",
       "city": "تهران",
       "phone": "021-33174291",
       "region": "جنوب تهران",
       "address": "تهران، شهرری، شهرک نظامی بلوار اصلی جنب زمین فوتبال، پلاک 74",
-      "stock": 500
+      "maps_url": "https://maps.app.goo.gl/hhaz5KhpQqhhjdxs9?g_st=ic"
     },
     {
       "id": 5,
-      "slug": "dr_fakhri",
+      "slug": "pharmacy_5",
       "name": "دکتر فخری",
       "city": "تهران",
       "phone": "021-88867892",
       "region": "مرکز تهران",
       "address": "تهران، کریمخان، خ شهید حسینی، ضلع جنوبی میدان سنائی، پلاک 54",
-      "stock": 200
+      "maps_url": "https://maps.app.goo.gl/NS31K3fbnppAPYdN8?g_st=ic"
     },
     {
       "id": 6,
-      "slug": "dr_elahi",
+      "slug": "pharmacy_6",
       "name": "دکتر الهی",
       "city": "تهران",
       "phone": "021-88844448",
       "region": "مرکز تهران",
       "address": "تهران، خ سنایی، خ مطهری، خ فجر، پ 43",
-      "stock": 100
+      "maps_url": "https://maps.app.goo.gl/GdvhpsP7KTUfTcKu6?g_st=ic"
     },
     {
       "id": 7,
-      "slug": "dr_radmanesh",
+      "slug": "pharmacy_7",
       "name": "دکتر رادمنش",
       "city": "تهران",
       "phone": "021-88269695",
       "region": "مرکز تهران",
       "address": "تهران، کوی نصر(گیشا)، ابتدای خ شانزدهم، پلاک 25",
-      "stock": 200
+      "maps_url": "https://maps.app.goo.gl/KBAEc2o9q7cHmWMT8?g_st=ic"
     },
     {
       "id": 8,
-      "slug": "dr_kalundi",
+      "slug": "pharmacy_8",
       "name": "دکتر کلوندی",
       "city": "تهران",
       "phone": "021-56352709",
       "region": "جنوب تهران",
       "address": "تهران، اسلامشهر، باغ فیض، خیابان امام حسین، نبش کوچه هاشم حسین زاده، پلاک 507",
-      "stock": 200
+      "maps_url": "https://maps.app.goo.gl/ugNeoa7tay2b1sdt7?g_st=ic",
+      "lat": 35.5534354,
+      "lng": 51.249267
     },
     {
       "id": 9,
-      "slug": "dr_vatan_khah",
+      "slug": "pharmacy_9",
+      "name": "دکتر اشعری",
+      "city": "تهران",
+      "phone": "021-88999003",
+      "region": "مرکز تهران",
+      "address": "تهران، میدان جهاد، جنب مسجد نور، خ طباطبایی، پلاک 11",
+      "maps_url": "https://maps.app.goo.gl/F9WdwxsTDJtTCkbf9?g_st=ic"
+    },
+    {
+      "id": 10,
+      "slug": "pharmacy_10",
+      "name": "شفادارو(دکتر صدیقی)",
+      "city": "تهران",
+      "phone": "021-77464335",
+      "region": "جنوب شرق تهران",
+      "address": "تهران، خ پنجم نیروهوایی، ضلع شمال غربی فلکه دوم نیرو هوایی",
+      "maps_url": "https://maps.app.goo.gl/5TTR7wtxbNL8fwiU7?g_st=ic"
+    },
+    {
+      "id": 11,
+      "slug": "pharmacy_11",
       "name": "دکتر وطن خواه",
       "city": "تهران",
       "phone": "021-44423028",
       "region": "شمال غرب تهران",
       "address": "تهران، میدان پونک، بلوار میرزابابایی، روبروی پارکینگ شهروند، پلاک 58",
-      "stock": 200
+      "maps_url": "https://maps.app.goo.gl/C772JGvDamtivf5j7?g_st=ic",
+      "lat": 35.7603135,
+      "lng": 51.3330586
+    },
+    {
+      "id": 12,
+      "slug": "pharmacy_12",
+      "name": "دکتر اسمعلی پور",
+      "city": "تبریز",
+      "phone": "041-33374541",
+      "region": "",
+      "address": "تبریز، خیابان آزادی، اول خیابان گلباد، داروخانه دکتر اسمعلی پور",
+      "maps_url": "https://maps.app.goo.gl/AY9ybAMqnEBqGq1t6",
+      "lat": 38.0612229,
+      "lng": 46.3220665
+    },
+    {
+      "id": 13,
+      "slug": "pharmacy_13",
+      "name": "میثاق",
+      "city": "تبریز",
+      "phone": "041-34394021",
+      "region": "",
+      "address": "تبریز، خ دامپزشکی، ورودی شنب غازان ، داروخانه میثاق",
+      "maps_url": "https://share.google/D6Rzc9UNAFzJWHv1D"
     }
   ]
 }
