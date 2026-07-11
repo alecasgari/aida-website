@@ -197,7 +197,10 @@
     pharmaciesList.forEach(function (pharmacy) {
       var option = document.createElement('option');
       option.value = pharmacy.slug;
-      option.textContent = pharmacy.name + ' — ' + pharmacy.region;
+      var place = pharmacy.region || pharmacy.city || '';
+      option.textContent = place
+        ? pharmacy.name + ' — ' + place
+        : pharmacy.name;
       if (pharmacy.slug === current) option.selected = true;
       select.appendChild(option);
     });

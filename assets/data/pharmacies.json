@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-07-10",
+  "updated_at": "2026-07-11",
   "source": "اطلاعات داروخانه ها برای سایت آیدا 19.04.1405.xlsx",
   "pharmacies": [
     {
       "id": 1,
-      "slug": "pharmacy_1",
+      "slug": "dr_kaveh_elvandi_tehran",
       "name": "دکتر کاوه (دکتر الوندی)",
       "city": "تهران",
       "phone": "021-33481104",
@@ -14,7 +14,7 @@
     },
     {
       "id": 2,
-      "slug": "pharmacy_2",
+      "slug": "dr_salem_tehran",
       "name": "دکتر سالم",
       "city": "تهران",
       "phone": "021-47908888",
@@ -24,7 +24,7 @@
     },
     {
       "id": 3,
-      "slug": "pharmacy_3",
+      "slug": "dr_saboor_5_shahrivar_tehran",
       "name": "پنجم شهریور ( دکتر صبور)",
       "city": "تهران",
       "phone": "021-66345847",
@@ -34,7 +34,7 @@
     },
     {
       "id": 4,
-      "slug": "pharmacy_4",
+      "slug": "dr_saboor_tehran",
       "name": "دکتر صبور",
       "city": "تهران",
       "phone": "021-33174291",
@@ -44,7 +44,7 @@
     },
     {
       "id": 5,
-      "slug": "pharmacy_5",
+      "slug": "dr_fakhri_tehran",
       "name": "دکتر فخری",
       "city": "تهران",
       "phone": "021-88867892",
@@ -54,7 +54,7 @@
     },
     {
       "id": 6,
-      "slug": "pharmacy_6",
+      "slug": "dr_elahi_tehran",
       "name": "دکتر الهی",
       "city": "تهران",
       "phone": "021-88844448",
@@ -64,7 +64,7 @@
     },
     {
       "id": 7,
-      "slug": "pharmacy_7",
+      "slug": "dr_radmanesh_tehran",
       "name": "دکتر رادمنش",
       "city": "تهران",
       "phone": "021-88269695",
@@ -74,7 +74,7 @@
     },
     {
       "id": 8,
-      "slug": "pharmacy_8",
+      "slug": "dr_kalundi_tehran",
       "name": "دکتر کلوندی",
       "city": "تهران",
       "phone": "021-56352709",
@@ -86,7 +86,7 @@
     },
     {
       "id": 9,
-      "slug": "pharmacy_9",
+      "slug": "dr_ashari_tehran",
       "name": "دکتر اشعری",
       "city": "تهران",
       "phone": "021-88999003",
@@ -96,7 +96,7 @@
     },
     {
       "id": 10,
-      "slug": "pharmacy_10",
+      "slug": "shafadaru_sedighi_tehran",
       "name": "شفادارو(دکتر صدیقی)",
       "city": "تهران",
       "phone": "021-77464335",
@@ -106,7 +106,7 @@
     },
     {
       "id": 11,
-      "slug": "pharmacy_11",
+      "slug": "dr_vatankhah_tehran",
       "name": "دکتر وطن خواه",
       "city": "تهران",
       "phone": "021-44423028",
@@ -118,7 +118,7 @@
     },
     {
       "id": 12,
-      "slug": "pharmacy_12",
+      "slug": "dr_esmailipour_tabriz",
       "name": "دکتر اسمعلی پور",
       "city": "تبریز",
       "phone": "041-33374541",
@@ -130,7 +130,7 @@
     },
     {
       "id": 13,
-      "slug": "pharmacy_13",
+      "slug": "misagh_tabriz",
       "name": "میثاق",
       "city": "تبریز",
       "phone": "041-34394021",
