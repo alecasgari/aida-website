@@ -62,6 +62,19 @@
   }
 
   function resolveOutboundClick(el) {
+    var social = el.closest('.footer__social a[href], .social-card[href]');
+    if (social) {
+      var href = social.getAttribute('href') || '';
+      var label = 'شبکه اجتماعی';
+      if (href.indexOf('instagram.com') !== -1) label = 'اینستاگرام آیدا';
+      if (href.indexOf('linkedin.com') !== -1) label = 'لینکدین آیدا';
+      return {
+        cta_label: label,
+        cta_location: social.classList.contains('social-card') ? 'social_card' : 'footer_social',
+        cta_destination: href
+      };
+    }
+
     var link = el.closest('.footer__logos a[href]');
     if (!link) return null;
 

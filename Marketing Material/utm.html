@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل هوشمند تولید لینک UTM آیدا ۲۰۲۶</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for beautiful marketing icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        
+        body {
+            font-family: 'Vazirmatn', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a; /* Slate 900 background for a premium dark mode feel */
+            color: #f8fafc;
+        }
+        
+        /* Custom scrollbar for premium look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #06b6d4;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0891b2;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- Top Navigation / Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-link text-slate-950 text-xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">پویش ملی آیدا ۲۰۲۶</h1>
+                    <p class="text-xs text-slate-400">سامانه تولید و مدیریت لینک‌های ردیابی کمپین (UTM)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    آماده بهره‌برداری مارکتینگ
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        
+        <!-- Welcome banner -->
+        <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/30 border border-slate-800 rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
+            <div class="relative z-10 max-w-3xl">
+                <span class="text-cyan-400 font-bold text-xs uppercase tracking-wider bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">مرجع ابزار تیم بازاریابی</span>
+                <h2 class="text-2xl sm:text-3xl font-black mt-3 mb-2">سلام همکار عزیز مارکتینگ! 👋</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    با استفاده از این پنل هوشمند، دیگر نیازی به نوشتن دستی لینک‌ها یا نگرانی از اشتباه تایپی در گوگل آنالیتیکس نیست. فیلدها را در سمت راست تکمیل کنید و بلافاصله لینک نهایی و کوتاه شده را بدون خطا تحویل بگیرید.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Side: URL Builder Form (8 Cols on desktop) -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex items-center gap-2 mb-6 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-sliders text-cyan-400 text-lg"></i>
+                        <h3 class="text-lg font-bold">تنظیم پارامترهای ردیابی</h3>
+                    </div>
+
+                    <form id="utm-form" class="space-y-6" onsubmit="event.preventDefault();">
+                        
+                        <!-- Step 1: Base URL -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2 flex justify-between items-center">
+                                <span>۱. انتخاب صفحه مقصد کمپین (Landing Page)</span>
+                                <span class="text-xs text-slate-500">محل هدایت کاربر</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="landing-presets">
+                                <button type="button" onclick="setLanding('https://www.iranaida.com/register.html', this)" class="landing-btn p-3 text-right rounded-2xl bg-slate-800 border-2 border-cyan-500 text-cyan-400 hover:bg-slate-800/80 transition-all font-medium text-xs flex items-center justify-between">
+                                    <span>ثبت نام و مشارکت</span>
+                                    <span class="text-[10px] bg-cyan-950 px-2 py-0.5 rounded text-cyan-300">register.html</span>
+                                </button>
+                                <button type="button" onclick="setLanding('https://www.iranaida.com/', this)" class="landing-btn p-3 text-right rounded-2xl bg-slate-800/40 border border-slate-700/60 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 transition-all text-xs flex items-center justify-between">
+                                    <span>صفحه اصلی کمپین</span>
+                                    <span class="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400">خانه</span>
+                                </button>
+                                <button type="button" onclick="setLanding('https://www.iranaida.com/hpv.html', this)" class="landing-btn p-3 text-right rounded-2xl bg-slate-800/40 border border-slate-700/60 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 transition-all text-xs flex items-center justify-between">
+                                    <span>صفحه آگاهی HPV</span>
+                                    <span class="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400">hpv.html</span>
+                                </button>
+                                <button type="button" onclick="setLanding('https://www.iranaida.com/gardisun.html', this)" class="landing-btn p-3 text-right rounded-2xl bg-slate-800/40 border border-slate-700/60 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 transition-all text-xs flex items-center justify-between">
+                                    <span>محصول گاردیسان</span>
+                                    <span class="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400">gardisun.html</span>
+                                </button>
+                            </div>
+                            <input type="url" id="custom-landing" value="https://www.iranaida.com/register.html" class="mt-3 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-cyan-500 transition-all font-mono" placeholder="آدرس دلخواه خود را وارد کنید...">
+                        </div>
+
+                        <!-- Step 2: Campaign Source -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">
+                                ۲. پلتفرم یا منبع انتشار (utm_source)
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <button type="button" onclick="setSource('instagram', this)" class="source-btn py-3 px-4 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-400 hover:bg-slate-800 transition-all text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-instagram text-pink-500 text-sm"></i> اینستاگرام
+                                </button>
+                                <button type="button" onclick="setSource('telegram', this)" class="source-btn py-3 px-4 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-400 hover:bg-slate-800 transition-all text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-telegram text-sky-400 text-sm"></i> تلگرام
+                                </button>
+                                <button type="button" onclick="setSource('pharmacy', this)" class="source-btn py-3 px-4 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-400 hover:bg-slate-800 transition-all text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-prescription-bottle-medical text-emerald-400 text-sm"></i> داروخانه
+                                </button>
+                                <button type="button" onclick="setSource('sms', this)" class="source-btn py-3 px-4 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-400 hover:bg-slate-800 transition-all text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-comment-sms text-amber-400 text-sm"></i> پیامک
+                                </button>
+                            </div>
+                            <input type="hidden" id="utm_source" value="">
+                        </div>
+
+                        <!-- Step 3: Campaign Medium (Contextual Options) -->
+                        <div id="medium-container" class="hidden">
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">
+                                ۳. نوع یا قالب انتشار (utm_medium)
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="medium-buttons">
+                                <!-- Dynamic Buttons Rendered by JS -->
+                            </div>
+                            <input type="hidden" id="utm_medium" value="">
+                        </div>
+
+                        <!-- Step 4: Campaign Content (Details/Username) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2 flex justify-between items-center">
+                                <span>۴. جزئیات کانال / آیدی / نام داروخانه (utm_content)</span>
+                                <span class="text-xs text-amber-400 font-normal" id="content-hint">حروف انگلیسی کوچک و _ بدون فاصله</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-sm">@</span>
+                                <input type="text" id="utm_content" class="w-full bg-slate-950 border border-slate-800 rounded-xl pr-9 pl-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-cyan-500 transition-all font-mono" placeholder="مثال: tehran_vanak_01 یا aida_official">
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Campaign Name (Always locked to aida2026) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-500 mb-2">
+                                ۵. نام کمپین ثابت (utm_campaign)
+                            </label>
+                            <input type="text" id="utm_campaign" value="aida2026" readonly class="w-full bg-slate-950/40 border border-slate-800/60 rounded-xl px-4 py-3 text-sm text-slate-500 font-mono cursor-not-allowed" title="این مقدار برای هماهنگی گزارش‌ها همیشه ثابت است.">
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Live Output Section -->
+                <div class="bg-gradient-to-br from-slate-900 to-cyan-950/20 border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl"></div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                            پیش‌نمایش لینک ردیابی‌شده
+                        </span>
+                        <div id="validation-badge" class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 py-1 px-2.5 rounded-md flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> فرم ناقص است
+                        </div>
+                    </div>
+
+                    <!-- Display URL Container -->
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl mb-5 font-mono text-sm text-cyan-400 break-all select-all flex items-center justify-between min-h-[60px]" id="final-link">
+                        https://www.iranaida.com/register.html?utm_campaign=aida2026
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button type="button" onclick="copyLink()" class="py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-slate-950 hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95">
+                            <i class="fa-regular fa-copy text-base"></i> کپی کردن لینک نهایی
+                        </button>
+                        <button type="button" onclick="testLink()" class="py-4 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700/80 text-slate-200 border border-slate-700 transition-all font-bold text-sm flex items-center justify-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-up-right-from-square"></i> تست و باز کردن لینک در پنجره جدید
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Guidelines & Presets (4 Cols on desktop) -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Quick Campaign Presets -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                        <h3 class="text-md font-bold">قالب‌های آماده کمپین</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4">برای پر شدن خودکار فرم، روی یکی از کمپین‌های هدف زیر کلیک کنید:</p>
+                    
+                    <div class="space-y-3">
+                        
+                        <!-- Preset 1 -->
+                        <button type="button" onclick="loadPreset('pharmacy_poster')" class="w-full p-4 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800/80 hover:border-cyan-500/50 text-right transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-400">پوستر عمومی زیر پیشخوان داروخانه‌ها</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">داروخانه</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">pharmacy · poster · counter_poster</p>
+                        </button>
+
+                        <!-- Preset 2 -->
+                        <button type="button" onclick="loadPreset('pharmacy_qr')" class="w-full p-4 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800/80 hover:border-cyan-500/50 text-right transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-400">بارکد QR درج شده روی پوسترها</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">داروخانه</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">pharmacy · qr · counter_poster</p>
+                        </button>
+
+                        <!-- Preset 3 -->
+                        <button type="button" onclick="loadPreset('insta_story')" class="w-full p-4 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800/80 hover:border-cyan-500/50 text-right transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-400">استوری لینک اینستاگرام آیدا</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">اینستاگرام</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">instagram · story · aida_official</p>
+                        </button>
+
+                        <!-- Preset 4 -->
+                        <button type="button" onclick="loadPreset('telegram_post')" class="w-full p-4 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800/80 hover:border-cyan-500/50 text-right transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-400">پست تبلیغاتی کانال‌های تلگرام</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">تلگرام</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">telegram · post · channel_health_iran</p>
+                        </button>
+
+                        <!-- Preset 5 -->
+                        <button type="button" onclick="loadPreset('sms_bulk')" class="w-full p-4 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800/80 hover:border-cyan-500/50 text-right transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-400">پیامک گروهی و انبوه مارکتینگ</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">پیامک</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">sms · bulk · wave1</p>
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Golden Rules Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-shield-halved text-amber-500"></i>
+                        <h3 class="text-md font-bold text-slate-200">قوانین طلایی نام‌گذاری</h3>
+                    </div>
+                    <ul class="space-y-3 text-xs text-slate-400">
+                        <li class="flex items-start gap-2 leading-relaxed">
+                            <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-300">حروف کوچک انگلیسی:</strong> تمام فیلدها حتماً باید با حروف انگلیسی کوچک پر شوند تا تکرار نام در گوگل آنالیتیکس رخ ندهد.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2 leading-relaxed">
+                            <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-300">بدون فاصله:</strong> از گذاشتن فاصله خودداری کنید. این پنل به صورت خودکار فاصله‌ها را با زیرخط (_) جایگزین می‌کند.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2 leading-relaxed">
+                            <i class="fa-solid fa-arrow-down-9-1 text-cyan-400 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-300">عدم استفاده از علائم:</strong> آیدی‌های اینستاگرام یا کانال‌های تلگرام را بدون علامت @ وارد کنید. این سامانه به طور هوشمند آن را حذف می‌کند.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Custom Toast Notification instead of alert() -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-12 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3 bg-slate-900 border border-cyan-500 text-slate-100 px-5 py-4 rounded-2xl shadow-2xl shadow-cyan-500/10 max-w-sm">
+        <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm" id="toast-title">لینک کپی شد</h4>
+            <p class="text-xs text-slate-400 mt-0.5" id="toast-body">لینک آماده جایگذاری در کمپین است.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© ۲۰۲۶ کمپین آیدا. تمامی حقوق متعلق به تیم توسعه فنی و بازاریابی پویش آیدا می‌باشد.</p>
+        </div>
+    </footer>
+
+    <!-- JS Logic for Dynamic Interaction -->
+    <script>
+        // Preset Definitions
+        const PRESETS = {
+            pharmacy_poster: {
+                landing: 'https://www.iranaida.com/register.html',
+                source: 'pharmacy',
+                medium: 'poster',
+                content: 'counter_poster'
+            },
+            pharmacy_qr: {
+                landing: 'https://www.iranaida.com/register.html',
+                source: 'pharmacy',
+                medium: 'qr',
+                content: 'counter_poster'
+            },
+            insta_story: {
+                landing: 'https://www.iranaida.com/',
+                source: 'instagram',
+                medium: 'story',
+                content: 'aida_official'
+            },
+            telegram_post: {
+                landing: 'https://www.iranaida.com/',
+                source: 'telegram',
+                medium: 'post',
+                content: 'channel_health_iran'
+            },
+            sms_bulk: {
+                landing: 'https://www.iranaida.com/register.html',
+                source: 'sms',
+                medium: 'bulk',
+                content: 'wave1'
+            }
+        };
+
+        // Standard medium options based on sources chosen
+        const MEDIUMS_BY_SOURCE = {
+            instagram: [
+                { value: 'story', label: 'استوری' },
+                { value: 'post', label: 'پست فید' },
+                { value: 'reel', label: 'ریلز' },
+                { value: 'bio', label: 'لینک بیو' },
+                { value: 'highlight', label: 'هایلایت' }
+            ],
+            telegram: [
+                { value: 'post', label: 'پست کانال' },
+                { value: 'pin', label: 'پست پین‌شده' },
+                { value: 'direct', label: 'لینک مستقیم' }
+            ],
+            pharmacy: [
+                { value: 'poster', label: 'پوستر' },
+                { value: 'qr', label: 'کد QR' }
+            ],
+            sms: [
+                { value: 'bulk', label: 'ارسال انبوه' },
+                { value: 'reminder', label: 'پیامک یادآوری' }
+            ]
+        };
+
+        let currentLanding = "https://www.iranaida.com/register.html";
+        let currentSource = "";
+        let currentMedium = "";
+
+        // Function to handle landing page change
+        function setLanding(url, btnElement) {
+            currentLanding = url;
+            document.getElementById('custom-landing').value = url;
+            
+            // Highlight button
+            document.querySelectorAll('.landing-btn').forEach(btn => {
+                btn.classList.remove('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+                btn.classList.add('border-slate-700/60', 'text-slate-400', 'bg-slate-800/40');
+            });
+            btnElement.classList.add('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+            btnElement.classList.remove('border-slate-700/60', 'text-slate-400', 'bg-slate-800/40');
+            
+            updateLink();
+        }
+
+        // Handle Custom Landing typing
+        document.getElementById('custom-landing').addEventListener('input', (e) => {
+            currentLanding = e.target.value;
+            // Remove highlighting on presets if typing manually
+            document.querySelectorAll('.landing-btn').forEach(btn => {
+                btn.classList.remove('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+                btn.classList.add('border-slate-700/60', 'text-slate-400', 'bg-slate-800/40');
+            });
+            updateLink();
+        });
+
+        // Function to select campaign source
+        function setSource(source, btnElement) {
+            currentSource = source;
+            document.getElementById('utm_source').value = source;
+
+            // Highlight source button
+            document.querySelectorAll('.source-btn').forEach(btn => {
+                btn.classList.remove('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+                btn.classList.add('border-slate-700', 'text-slate-400', 'bg-slate-800/40');
+            });
+            btnElement.classList.add('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+            btnElement.classList.remove('border-slate-700', 'text-slate-400', 'bg-slate-800/40');
+
+            // Render matching mediums dynamically
+            renderMediums(source);
+            updateLink();
+        }
+
+        // Render dynamic medium options based on Selected Source
+        function renderMediums(source) {
+            const container = document.getElementById('medium-container');
+            const targetDiv = document.getElementById('medium-buttons');
+            targetDiv.innerHTML = '';
+            currentMedium = "";
+            document.getElementById('utm_medium').value = "";
+
+            if (MEDIUMS_BY_SOURCE[source]) {
+                container.classList.remove('hidden');
+                MEDIUMS_BY_SOURCE[source].forEach(med => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = "medium-btn py-3 px-4 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-400 hover:bg-slate-800 transition-all text-xs font-semibold text-center";
+                    btn.innerText = med.label;
+                    btn.onclick = (e) => setMedium(med.value, btn);
+                    targetDiv.appendChild(btn);
+                });
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // Select campaign medium
+        function setMedium(medium, btnElement) {
+            currentMedium = medium;
+            document.getElementById('utm_medium').value = medium;
+
+            document.querySelectorAll('.medium-btn').forEach(btn => {
+                btn.classList.remove('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+                btn.classList.add('border-slate-700', 'text-slate-400', 'bg-slate-800/40');
+            });
+            btnElement.classList.add('border-cyan-500', 'text-cyan-400', 'bg-slate-800');
+            btnElement.classList.remove('border-slate-700', 'text-slate-400', 'bg-slate-800/40');
+
+            updateLink();
+        }
+
+        // Sanitize Content (Handle typing)
+        document.getElementById('utm_content').addEventListener('input', (e) => {
+            let val = e.target.value;
+            // Clean content to match GA rules
+            val = val.toLowerCase()
+                     .replace(/@/g, '') // Remove symbol @
+                     .replace(/[\s\.]+/g, '_') // Convert space or dot to underscore
+                     .replace(/[^a-z0-9\_]/g, ''); // Keep only letters, numbers and underscores
+            
+            e.target.value = val;
+            updateLink();
+        });
+
+        // Real-time generator algorithm
+        function updateLink() {
+            const landing = currentLanding.trim() || "https://www.iranaida.com/register.html";
+            const source = currentSource;
+            const medium = currentMedium;
+            const content = document.getElementById('utm_content').value.trim();
+            const campaign = "aida2026";
+
+            let finalUrl = landing;
+            let missingParams = [];
+
+            if (!source) missingParams.push('utm_source');
+            if (!medium) missingParams.push('utm_medium');
+            if (!content) missingParams.push('utm_content');
+
+            // Build query params
+            let params = [];
+            params.push(`utm_campaign=${campaign}`);
+            if (source) params.push(`utm_source=${source}`);
+            if (medium) params.push(`utm_medium=${medium}`);
+            if (content) params.push(`utm_content=${content}`);
+
+            // Append query to url
+            if (params.length > 0) {
+                const connector = finalUrl.includes('?') ? '&' : '?';
+                finalUrl += connector + params.join('&');
+            }
+
+            // Update DOM element
+            document.getElementById('final-link').innerText = finalUrl;
+
+            // Update validation badge
+            const badge = document.getElementById('validation-badge');
+            if (missingParams.length > 0) {
+                badge.className = "text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 py-1 px-2.5 rounded-md flex items-center gap-1";
+                badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> فرم ناقص است (نیاز به: ${missingParams.join('، ')})`;
+            } else {
+                badge.className = "text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 py-1 px-2.5 rounded-md flex items-center gap-1";
+                badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> لینک کامل و آماده کپی است`;
+            }
+        }
+
+        // Quick fill preset values
+        function loadPreset(key) {
+            const preset = PRESETS[key];
+            if (!preset) return;
+
+            // 1. Landing
+            const landingBtns = document.querySelectorAll('.landing-btn');
+            let matchedLandingBtn = null;
+            landingBtns.forEach(btn => {
+                if (btn.innerText.includes(preset.landing.split('/').pop() || 'خانه')) {
+                    matchedLandingBtn = btn;
+                }
+            });
+            if (matchedLandingBtn) {
+                setLanding(preset.landing, matchedLandingBtn);
+            } else {
+                currentLanding = preset.landing;
+                document.getElementById('custom-landing').value = preset.landing;
+            }
+
+            // 2. Source
+            const sourceBtns = document.querySelectorAll('.source-btn');
+            sourceBtns.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(preset.source === 'sms' ? 'پیامک' : preset.source === 'pharmacy' ? 'داروخانه' : preset.source)) {
+                    setSource(preset.source, btn);
+                }
+            });
+
+            // 3. Medium
+            setTimeout(() => {
+                const mediumBtns = document.querySelectorAll('.medium-btn');
+                mediumBtns.forEach(btn => {
+                    const mappedValue = MEDIUMS_BY_SOURCE[preset.source]?.find(m => m.value === preset.medium)?.label;
+                    if (btn.innerText === mappedValue) {
+                        setMedium(preset.medium, btn);
+                    }
+                });
+            }, 50);
+
+            // 4. Content
+            document.getElementById('utm_content').value = preset.content;
+
+            setTimeout(() => {
+                updateLink();
+                showToast("قالب بارگذاری شد!", "مقادیر کمپین به صورت خودکار در فرم اعمال شدند.");
+            }, 100);
+        }
+
+        // Copy functionality with interactive fallback
+        function copyLink() {
+            const linkText = document.getElementById('final-link').innerText;
+            
+            // Create a temporary hidden textarea to copy in all environments
+            const tempInput = document.createElement('textarea');
+            tempInput.value = linkText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast("کپی موفقیت‌آمیز بود!", "لینک UTM دار با موفقیت کپی شد.");
+        }
+
+        // Testing the final generated URL
+        function testLink() {
+            const url = document.getElementById('final-link').innerText;
+            window.open(url, '_blank');
+        }
+
+        // Interactive Toast Message Manager
+        function showToast(title, body) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-body').innerText = body;
+
+            toast.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 4000);
+        }
+
+        // Initialize default loaded layout on first open
+        window.onload = function() {
+            // Set first source as active (e.g. instagram)
+            const firstSourceBtn = document.querySelectorAll('.source-btn')[0];
+            setSource('instagram', firstSourceBtn);
+            updateLink();
+        }
+    </script>
+</body>
+</html>

@@ -921,6 +921,183 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.footer__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 auto 1.35rem;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff !important;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast), border-color var(--duration-fast);
+}
+
+.footer__social-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.footer__social-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.footer__social-link--instagram:hover {
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.35), rgba(253, 29, 29, 0.3));
+}
+
+.footer__social-link--linkedin:hover {
+  background: rgba(10, 102, 194, 0.4);
+}
+
+/* Social follow cards */
+.social-follow {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.social-follow__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  color: var(--color-primary-darker);
+}
+
+.social-follow__lead {
+  margin: 0 0 1.25rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+}
+
+.social-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  text-decoration: none;
+  color: inherit;
+  text-align: right;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast), border-color var(--duration-fast);
+}
+
+.social-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.social-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.social-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.social-card--instagram .social-card__icon {
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 45%, #8134af 100%);
+}
+
+.social-card--linkedin .social-card__icon {
+  background: #0a66c2;
+}
+
+.social-card--instagram:hover {
+  border-color: #dd2a7b;
+}
+
+.social-card--linkedin:hover {
+  border-color: #0a66c2;
+}
+
+.social-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.social-card__name {
+  font-weight: 700;
+  color: var(--color-primary-darker);
+}
+
+.social-card__handle {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  direction: ltr;
+  text-align: right;
+}
+
+.social-card__action {
+  margin-right: auto;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.social-follow--compact .social-follow__title {
+  font-size: 1.15rem;
+}
+
+.thankyou .social-follow {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.contact-social {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-social .social-cards {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 560px) {
+  .social-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .social-card__action {
+    display: none;
+  }
+}
+
 .footer__disclaimer {
   font-size: 0.82rem;
   line-height: 1.7;
