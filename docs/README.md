@@ -12,6 +12,8 @@
 | [04-n8n-datatable-guide.md](./04-n8n-datatable-guide.md) | راهنمای n8n Data Table + عکس + کد رهگیری |
 | [05-gtm-ga4-analytics-guide.md](./05-gtm-ga4-analytics-guide.md) | **راهنمای کامل GTM، GA4، dataLayer و Search Console** |
 | [06-campaign-utm-links.md](./06-campaign-utm-links.md) | **راهنمای تولید لینک UTM برای تیم مارکتینگ** |
+| [07-n8n-register-workflow-guide.md](./07-n8n-register-workflow-guide.md) | workflow ثبت مشارکت (Drive + Sheets + Data Table) |
+| [08-n8n-stats-workflow-guide.md](./08-n8n-stats-workflow-guide.md) | **آمار روزانه پویش + API برای stats.js** |
 
 ## متریال مرجع
 

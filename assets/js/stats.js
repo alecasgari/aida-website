@@ -12,10 +12,26 @@
     cities: 4
   };
 
-  var STATS_API_URL = '';
+  /* بعد از import و Activate کردن docs/08-n8n-stats-workflow.json */
+  var STATS_API_URL = 'https://n8n.alecasgari.com/webhook/aida-campaign-stats';
 
   function faNum(n) {
     return Number(n).toLocaleString('fa-IR');
+  }
+
+  function toNum(value, fallback) {
+    var n = Number(value);
+    return isFinite(n) ? n : fallback;
+  }
+
+  function applyStats(data) {
+    if (data.participants != null) STATS.participants = toNum(data.participants, STATS.participants);
+    if (data.goalFirst != null) STATS.goalFirst = toNum(data.goalFirst, STATS.goalFirst);
+    if (data.goalSecond != null) STATS.goalSecond = toNum(data.goalSecond, STATS.goalSecond);
+    if (data.goalMain != null) STATS.goalMain = toNum(data.goalMain, STATS.goalMain);
+    if (data.provinces != null) STATS.provinces = toNum(data.provinces, STATS.provinces);
+    if (data.cities != null) STATS.cities = toNum(data.cities, STATS.cities);
+    if (data.freeRatio != null) STATS.freeRatio = toNum(data.freeRatio, STATS.freeRatio);
   }
 
   function calcDerived() {
@@ -162,13 +178,7 @@
     return fetch(STATS_API_URL)
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        if (data.participants != null) STATS.participants = data.participants;
-        if (data.goalFirst != null) STATS.goalFirst = data.goalFirst;
-        if (data.goalSecond != null) STATS.goalSecond = data.goalSecond;
-        if (data.goalMain != null) STATS.goalMain = data.goalMain;
-        if (data.provinces != null) STATS.provinces = data.provinces;
-        if (data.cities != null) STATS.cities = data.cities;
-        if (data.freeRatio != null) STATS.freeRatio = data.freeRatio;
+        applyStats(data);
       })
       .catch(function () { /* از مقادیر پیش‌فرض استفاده می‌شود */ });
   }
