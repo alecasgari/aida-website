@@ -12,8 +12,8 @@
     cities: 4
   };
 
-  /* بعد از import و Activate کردن docs/08-n8n-stats-workflow.json */
-  var STATS_API_URL = 'https://n8n.alecasgari.com/webhook/aida-campaign-stats';
+  /* فایل استاتیک — روزانه توسط n8n روی گیت آپدیت می‌شود */
+  var STATS_API_URL = 'assets/data/stats.json';
 
   function faNum(n) {
     return Number(n).toLocaleString('fa-IR');

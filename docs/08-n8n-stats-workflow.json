@@ -14,7 +14,7 @@
       },
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [240, 300],
+      "position": [240, 400],
       "id": "stats-schedule-001",
       "name": "Daily 6 AM"
     },
@@ -22,7 +22,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [240, 480],
+      "position": [240, 560],
       "id": "stats-manual-002",
       "name": "Manual Refresh"
     },
@@ -51,146 +51,154 @@
       },
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
-      "position": [520, 390],
+      "position": [480, 480],
       "id": "stats-get-rows-003",
       "name": "Get All Registrations"
     },
     {
       "parameters": {
-        "jsCode": "const BASE_PARTICIPANTS = 6000;\nconst MANUAL_PROVINCES = 2;\nconst MANUAL_CITIES = 4;\n\nconst rows = $input.all();\nconst formCount = rows.length;\n\nreturn [{\n  json: {\n    cache_key: 'latest',\n    participants: BASE_PARTICIPANTS + formCount,\n    registrations_from_form: formCount,\n    base_participants: BASE_PARTICIPANTS,\n    provinces: MANUAL_PROVINCES,\n    cities: MANUAL_CITIES,\n    goalFirst: 50000,\n    goalSecond: 500000,\n    goalMain: 1000000,\n    freeRatio: 10,\n    updated_at: new Date().toISOString()\n  }\n}];"
+        "jsCode": "const BASE_PARTICIPANTS = 6000;\nconst MANUAL_PROVINCES = 2;\nconst MANUAL_CITIES = 4;\n\nconst rows = $input.all();\nconst formCount = rows.length;\n\nconst stats = {\n  participants: BASE_PARTICIPANTS + formCount,\n  registrations_from_form: formCount,\n  base_participants: BASE_PARTICIPANTS,\n  provinces: MANUAL_PROVINCES,\n  cities: MANUAL_CITIES,\n  goalFirst: 50000,\n  goalSecond: 500000,\n  goalMain: 1000000,\n  freeRatio: 10,\n  updated_at: new Date().toISOString()\n};\n\nconst pretty = JSON.stringify(stats, null, 2) + '\\n';\nconst contentBase64 = Buffer.from(pretty, 'utf8').toString('base64');\n\nreturn [{\n  json: {\n    ...stats,\n    file_path: 'assets/data/stats.json',\n    content_base64: contentBase64,\n    content_pretty: pretty\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [780, 390],
+      "position": [720, 480],
       "id": "stats-calc-004",
       "name": "Calculate Stats"
     },
     {
       "parameters": {
-        "resource": "row",
-        "operation": "upsert",
-        "dataTableId": {
-          "__rl": true,
-          "value": "aida-stats-cache",
-          "mode": "name",
-          "cachedResultName": "aida-stats-cache"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "cache_key": "={{ $json.cache_key }}",
-            "participants": "={{ $json.participants }}",
-            "registrations_from_form": "={{ $json.registrations_from_form }}",
-            "base_participants": "={{ $json.base_participants }}",
-            "provinces": "={{ $json.provinces }}",
-            "cities": "={{ $json.cities }}",
-            "goalFirst": "={{ $json.goalFirst }}",
-            "goalSecond": "={{ $json.goalSecond }}",
-            "goalMain": "={{ $json.goalMain }}",
-            "freeRatio": "={{ $json.freeRatio }}",
-            "updated_at": "={{ $json.updated_at }}"
-          },
-          "matchingColumns": ["cache_key"],
-          "schema": [
-            { "id": "cache_key", "displayName": "cache_key", "type": "string", "canBeUsedToMatch": true },
-            { "id": "participants", "displayName": "participants", "type": "number" },
-            { "id": "registrations_from_form", "displayName": "registrations_from_form", "type": "number" },
-            { "id": "base_participants", "displayName": "base_participants", "type": "number" },
-            { "id": "provinces", "displayName": "provinces", "type": "number" },
-            { "id": "cities", "displayName": "cities", "type": "number" },
-            { "id": "goalFirst", "displayName": "goalFirst", "type": "number" },
-            { "id": "goalSecond", "displayName": "goalSecond", "type": "number" },
-            { "id": "goalMain", "displayName": "goalMain", "type": "number" },
-            { "id": "freeRatio", "displayName": "freeRatio", "type": "number" },
-            { "id": "updated_at", "displayName": "updated_at", "type": "string" }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [1040, 390],
-      "id": "stats-save-cache-008",
-      "name": "Save Stats Cache"
-    },
-    {
-      "parameters": {
-        "path": "aida-campaign-stats",
-        "httpMethod": "GET",
-        "responseMode": "responseNode",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [240, 120],
-      "id": "stats-webhook-005",
-      "name": "Stats API",
-      "webhookId": "aida-campaign-stats"
-    },
-    {
-      "parameters": {
-        "resource": "row",
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "aida-stats-cache",
-          "mode": "name",
-          "cachedResultName": "aida-stats-cache"
-        },
-        "matchType": "allConditions",
-        "filters": {
-          "conditions": [
+        "method": "GET",
+        "url": "https://api.github.com/repos/alecasgari/aida-website/contents/assets/data/stats.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
             {
-              "keyName": "cache_key",
-              "condition": "eq",
-              "keyValue": "latest"
+              "name": "ref",
+              "value": "main"
             }
           ]
         },
-        "returnAll": false,
-        "limit": 1,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [520, 120],
-      "id": "stats-load-cache-009",
-      "name": "Get Stats Cache"
-    },
-    {
-      "parameters": {
-        "jsCode": "const rows = $input.all();\n\nconst DEFAULT_STATS = {\n  participants: 6000,\n  base_participants: 6000,\n  registrations_from_form: 0,\n  provinces: 2,\n  cities: 4,\n  goalFirst: 50000,\n  goalSecond: 500000,\n  goalMain: 1000000,\n  freeRatio: 10,\n  updated_at: null\n};\n\nif (!rows.length) {\n  return [{ json: DEFAULT_STATS }];\n}\n\nconst r = rows[0].json;\nconst num = (v, fallback) => {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : fallback;\n};\n\nreturn [{\n  json: {\n    participants: num(r.participants, DEFAULT_STATS.participants),\n    registrations_from_form: num(r.registrations_from_form, 0),\n    base_participants: num(r.base_participants, 6000),\n    provinces: num(r.provinces, 2),\n    cities: num(r.cities, 4),\n    goalFirst: num(r.goalFirst, 50000),\n    goalSecond: num(r.goalSecond, 500000),\n    goalMain: num(r.goalMain, 1000000),\n    freeRatio: num(r.freeRatio, 10),\n    updated_at: r.updated_at || null\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [780, 120],
-      "id": "stats-format-010",
-      "name": "Format Stats Response"
-    },
-    {
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={{ JSON.stringify($json) }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
         "options": {
-          "responseHeaders": {
-            "entries": [
-              {
-                "name": "Access-Control-Allow-Origin",
-                "value": "*"
-              },
-              {
-                "name": "Cache-Control",
-                "value": "public, max-age=3600"
-              }
-            ]
+          "response": {
+            "response": {
+              "neverError": true,
+              "fullResponse": true
+            }
           }
         }
       },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.1,
-      "position": [1040, 120],
-      "id": "stats-respond-007",
-      "name": "Respond Stats"
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [960, 480],
+      "id": "stats-get-file-005",
+      "name": "Get Current File",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GITHUB_HEADER_AUTH_ID",
+          "name": "GitHub PAT (Aida Stats)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const stats = $('Calculate Stats').first().json;\nconst res = $input.first().json;\n\nconst statusCode = res.statusCode || res.status || 200;\nconst body = res.body || res;\n\nlet sha = null;\nif (statusCode === 200 && body && body.sha) {\n  sha = body.sha;\n}\n\nlet skip = false;\nif (statusCode === 200 && body && body.content) {\n  const existing = Buffer.from(String(body.content).replace(/\\n/g, ''), 'base64').toString('utf8');\n  if (existing.trim() === String(stats.content_pretty).trim()) {\n    skip = true;\n  }\n}\n\nconst putBody = {\n  message: `chore(stats): update campaign participants to ${stats.participants}`,\n  content: stats.content_base64,\n  branch: 'main'\n};\nif (sha) putBody.sha = sha;\n\nreturn [{\n  json: {\n    skip,\n    participants: stats.participants,\n    put_body: putBody\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 480],
+      "id": "stats-prepare-006",
+      "name": "Prepare Commit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "not-skip",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1440, 480],
+      "id": "stats-if-007",
+      "name": "Needs Update?"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.github.com/repos/alecasgari/aida-website/contents/assets/data/stats.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.put_body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1680, 400],
+      "id": "stats-commit-008",
+      "name": "Commit Stats JSON",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GITHUB_HEADER_AUTH_ID",
+          "name": "GitHub PAT (Aida Stats)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { skipped: true, reason: 'stats.json already up to date', participants: $json.participants } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1680, 560],
+      "id": "stats-skip-009",
+      "name": "Already Up To Date"
     }
   ],
   "connections": {
@@ -231,40 +239,47 @@
       "main": [
         [
           {
-            "node": "Save Stats Cache",
+            "node": "Get Current File",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Stats API": {
+    "Get Current File": {
       "main": [
         [
           {
-            "node": "Get Stats Cache",
+            "node": "Prepare Commit",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Stats Cache": {
+    "Prepare Commit": {
       "main": [
         [
           {
-            "node": "Format Stats Response",
+            "node": "Needs Update?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Format Stats Response": {
+    "Needs Update?": {
       "main": [
         [
           {
-            "node": "Respond Stats",
+            "node": "Commit Stats JSON",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Already Up To Date",
             "type": "main",
             "index": 0
           }
@@ -278,6 +293,6 @@
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
+    "templateCredsSetupCompleted": false
   }
 }
