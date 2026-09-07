@@ -2765,10 +2765,203 @@ body.modal-open {
   margin: 0 0 1rem;
 }
 
+.tapsi-card {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.tapsi-card__media {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.tapsi-card__banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.tapsi-card__body {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.tapsi-card__header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.tapsi-card__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+  line-height: 1.4;
+  color: var(--color-primary-darker);
+}
+
+.tapsi-card__subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.tapsi-card__cities,
+.tapsi-card__tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tapsi-card__cities {
+  flex-wrap: wrap;
+}
+
+.tapsi-card__cities li {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-mint);
+  color: var(--color-primary-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.tapsi-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tapsi-card__tag--delivery {
+  background: #ffe8e2;
+  color: #c24737;
+}
+
+.tapsi-card__tag--cold {
+  background: var(--color-sky);
+  color: #1f6f86;
+}
+
+.tapsi-card__tag--installment {
+  background: var(--color-lavender);
+  color: #7a3d5f;
+}
+
+.tapsi-card__tag--delivery::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3 7h11v8H3zM14 10h4l3 3v2h-7zM6 18a2 2 0 100-4 2 2 0 000 4zm11 0a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3 7h11v8H3zM14 10h4l3 3v2h-7zM6 18a2 2 0 100-4 2 2 0 000 4zm11 0a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.tapsi-card__tag--cold::before {
+  content: '❄';
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.tapsi-card__tag--installment::before {
+  content: '٪';
+  font-size: 0.62rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.tapsi-card__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.tapsi-card__site {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  align-self: center;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: center;
+}
+
+.tapsi-card__site::before {
+  content: '';
+  width: 0.95rem;
+  height: 0.95rem;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.tapsi-card__site:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.tapsi-card__cta {
+  width: 100%;
+  text-align: center;
+}
+
+.pharmacy-list-heading {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  color: var(--color-primary-darker);
+}
+
 .pharmacy-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .tapsi-card {
+    grid-template-columns: minmax(240px, 1fr) 1.2fr;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .tapsi-card__footer {
+    margin-top: 0.5rem;
+  }
+
+  .tapsi-card__tags {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
 }
 
 .pharmacy-card {

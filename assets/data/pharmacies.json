@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-11",
-  "source": "اطلاعات داروخانه ها برای سایت آیدا 19.04.1405.xlsx",
+  "updated_at": "2026-09-07",
+  "source": "اطلاعات داروخانه ها برای سایت آیدا 19.04.1405.xlsx — به‌روزرسانی حذف داروخانه‌های غیرفعال + تپسی دکتر",
   "pharmacies": [
     {
       "id": 1,
@@ -11,26 +11,6 @@
       "region": "جنوب شرق تهران",
       "address": "تهران، شهرک مسعودیه، خ محمدکاظم بین بلوار ابومسلم خراسانی و مهاجرانی، پ364",
       "maps_url": "https://maps.app.goo.gl/7ZhUk3vtoDHsW9zv8?g_st=ic"
-    },
-    {
-      "id": 2,
-      "slug": "dr_salem_tehran",
-      "name": "دکتر سالم",
-      "city": "تهران",
-      "phone": "021-47908888",
-      "region": "غرب تهران",
-      "address": "تهران، میدان دوم صادقیه، بزرگراه کاشانی، پلاک2",
-      "maps_url": "https://maps.app.goo.gl/7ZhUk3vtoDHsW9zv8?g_st=ic"
-    },
-    {
-      "id": 3,
-      "slug": "dr_saboor_5_shahrivar_tehran",
-      "name": "پنجم شهریور ( دکتر صبور)",
-      "city": "تهران",
-      "phone": "021-66345847",
-      "region": "شمال تهران",
-      "address": "تهران، شیخ بهایی، کارگر جنوبی، پایین تر از میدان پاستور",
-      "maps_url": "https://maps.app.goo.gl/sXGpr8Men61yPyz5A?g_st=ic"
     },
     {
       "id": 4,
@@ -51,16 +31,6 @@
       "region": "مرکز تهران",
       "address": "تهران، کریمخان، خ شهید حسینی، ضلع جنوبی میدان سنائی، پلاک 54",
       "maps_url": "https://maps.app.goo.gl/NS31K3fbnppAPYdN8?g_st=ic"
-    },
-    {
-      "id": 6,
-      "slug": "dr_elahi_tehran",
-      "name": "دکتر الهی",
-      "city": "تهران",
-      "phone": "021-88844448",
-      "region": "مرکز تهران",
-      "address": "تهران، خ سنایی، خ مطهری، خ فجر، پ 43",
-      "maps_url": "https://maps.app.goo.gl/GdvhpsP7KTUfTcKu6?g_st=ic"
     },
     {
       "id": 7,
@@ -85,26 +55,6 @@
       "lng": 51.249267
     },
     {
-      "id": 9,
-      "slug": "dr_ashari_tehran",
-      "name": "دکتر اشعری",
-      "city": "تهران",
-      "phone": "021-88999003",
-      "region": "مرکز تهران",
-      "address": "تهران، میدان جهاد، جنب مسجد نور، خ طباطبایی، پلاک 11",
-      "maps_url": "https://maps.app.goo.gl/F9WdwxsTDJtTCkbf9?g_st=ic"
-    },
-    {
-      "id": 10,
-      "slug": "shafadaru_sedighi_tehran",
-      "name": "شفادارو(دکتر صدیقی)",
-      "city": "تهران",
-      "phone": "021-77464335",
-      "region": "جنوب شرق تهران",
-      "address": "تهران، خ پنجم نیروهوایی، ضلع شمال غربی فلکه دوم نیرو هوایی",
-      "maps_url": "https://maps.app.goo.gl/5TTR7wtxbNL8fwiU7?g_st=ic"
-    },
-    {
       "id": 11,
       "slug": "dr_vatankhah_tehran",
       "name": "دکتر وطن خواه",
@@ -115,28 +65,6 @@
       "maps_url": "https://maps.app.goo.gl/C772JGvDamtivf5j7?g_st=ic",
       "lat": 35.7603135,
       "lng": 51.3330586
-    },
-    {
-      "id": 12,
-      "slug": "dr_esmailipour_tabriz",
-      "name": "دکتر اسمعلی پور",
-      "city": "تبریز",
-      "phone": "041-33374541",
-      "region": "",
-      "address": "تبریز، خیابان آزادی، اول خیابان گلباد، داروخانه دکتر اسمعلی پور",
-      "maps_url": "https://maps.app.goo.gl/AY9ybAMqnEBqGq1t6",
-      "lat": 38.0612229,
-      "lng": 46.3220665
-    },
-    {
-      "id": 13,
-      "slug": "misagh_tabriz",
-      "name": "میثاق",
-      "city": "تبریز",
-      "phone": "041-34394021",
-      "region": "",
-      "address": "تبریز، خ دامپزشکی، ورودی شنب غازان ، داروخانه میثاق",
-      "maps_url": "https://share.google/D6Rzc9UNAFzJWHv1D"
     }
   ]
 }
