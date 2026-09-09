@@ -1,6 +1,6 @@
 {
-  "participants": 6007,
-  "registrations_from_form": 7,
+  "participants": 6009,
+  "registrations_from_form": 9,
   "base_participants": 6000,
   "provinces": 2,
   "cities": 4,
@@ -8,5 +8,5 @@
   "goalSecond": 500000,
   "goalMain": 1000000,
   "freeRatio": 10,
-  "updated_at": "2026-09-08T02:00:00.540Z"
+  "updated_at": "2026-09-09T02:00:00.386Z"
 }
